@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.escort.mapper.EscortHospitalMapper">
+    
+    <resultMap type="EscortHospital" id="EscortHospitalResult">
+        <result property="hospitalId"    column="hospital_id"    />
+        <result property="hospitalName"    column="hospital_name"    />
+        <result property="hospitalType"    column="hospital_type"    />
+        <result property="hospitalServerTime"    column="hospital_server_time"    />
+        <result property="hospitalArea"    column="hospital_area"    />
+        <result property="hospitalAddress"    column="hospital_address"    />
+        <result property="hospitalIntroduce"    column="hospital_introduce"    />
+        <result property="hospitalStatus"    column="hospital_status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEscortHospitalVo">
+        select hospital_id, hospital_name, hospital_type, hospital_server_time, hospital_area, hospital_address, hospital_introduce, hospital_status, del_flag, create_by, create_time, update_by, update_time, remark from escort_hospital
+    </sql>
+
+    <select id="selectEscortHospitalList" parameterType="EscortHospital" resultMap="EscortHospitalResult">
+        <include refid="selectEscortHospitalVo"/>
+        <where>  
+            <if test="hospitalName != null  and hospitalName != ''"> and hospital_name like concat('%', #{hospitalName}, '%')</if>
+            <if test="hospitalType != null  and hospitalType != ''"> and hospital_type = #{hospitalType}</if>
+            <if test="hospitalServerTime != null  and hospitalServerTime != ''"> and hospital_server_time = #{hospitalServerTime}</if>
+            <if test="hospitalArea != null  and hospitalArea != ''"> and hospital_area = #{hospitalArea}</if>
+            <if test="hospitalAddress != null  and hospitalAddress != ''"> and hospital_address = #{hospitalAddress}</if>
+            <if test="hospitalIntroduce != null  and hospitalIntroduce != ''"> and hospital_introduce = #{hospitalIntroduce}</if>
+            <if test="hospitalStatus != null  and hospitalStatus != ''"> and hospital_status = #{hospitalStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectEscortHospitalByHospitalId" parameterType="Long" resultMap="EscortHospitalResult">
+        <include refid="selectEscortHospitalVo"/>
+        where hospital_id = #{hospitalId}
+    </select>
+        
+    <insert id="insertEscortHospital" parameterType="EscortHospital" useGeneratedKeys="true" keyProperty="hospitalId">
+        insert into escort_hospital
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hospitalName != null">hospital_name,</if>
+            <if test="hospitalType != null">hospital_type,</if>
+            <if test="hospitalServerTime != null">hospital_server_time,</if>
+            <if test="hospitalArea != null">hospital_area,</if>
+            <if test="hospitalAddress != null">hospital_address,</if>
+            <if test="hospitalIntroduce != null">hospital_introduce,</if>
+            <if test="hospitalStatus != null">hospital_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hospitalName != null">#{hospitalName},</if>
+            <if test="hospitalType != null">#{hospitalType},</if>
+            <if test="hospitalServerTime != null">#{hospitalServerTime},</if>
+            <if test="hospitalArea != null">#{hospitalArea},</if>
+            <if test="hospitalAddress != null">#{hospitalAddress},</if>
+            <if test="hospitalIntroduce != null">#{hospitalIntroduce},</if>
+            <if test="hospitalStatus != null">#{hospitalStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEscortHospital" parameterType="EscortHospital">
+        update escort_hospital
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hospitalName != null">hospital_name = #{hospitalName},</if>
+            <if test="hospitalType != null">hospital_type = #{hospitalType},</if>
+            <if test="hospitalServerTime != null">hospital_server_time = #{hospitalServerTime},</if>
+            <if test="hospitalArea != null">hospital_area = #{hospitalArea},</if>
+            <if test="hospitalAddress != null">hospital_address = #{hospitalAddress},</if>
+            <if test="hospitalIntroduce != null">hospital_introduce = #{hospitalIntroduce},</if>
+            <if test="hospitalStatus != null">hospital_status = #{hospitalStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where hospital_id = #{hospitalId}
+    </update>
+
+    <delete id="deleteEscortHospitalByHospitalId" parameterType="Long">
+        delete from escort_hospital where hospital_id = #{hospitalId}
+    </delete>
+
+    <delete id="deleteEscortHospitalByHospitalIds" parameterType="String">
+        delete from escort_hospital where hospital_id in 
+        <foreach item="hospitalId" collection="array" open="(" separator="," close=")">
+            #{hospitalId}
+        </foreach>
+    </delete>
+</mapper>
