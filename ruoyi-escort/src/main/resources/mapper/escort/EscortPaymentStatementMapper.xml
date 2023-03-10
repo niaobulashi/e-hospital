@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.escort.mapper.EscortPaymentStatementMapper">
+    
+    <resultMap type="EscortPaymentStatement" id="EscortPaymentStatementResult">
+        <result property="paymentId"    column="payment_id"    />
+        <result property="paymentNo"    column="payment_no"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="paymentTime"    column="payment_time"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEscortPaymentStatementVo">
+        select payment_id, payment_no, order_no, payment_time, payment_amount, del_flag, create_by, create_time, update_by, update_time, remark from escort_payment_statement
+    </sql>
+
+    <select id="selectEscortPaymentStatementList" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
+        <include refid="selectEscortPaymentStatementVo"/>
+        <where>  
+            <if test="paymentNo != null  and paymentNo != ''"> and payment_no = #{paymentNo}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="paymentTime != null "> and payment_time = #{paymentTime}</if>
+            <if test="paymentAmount != null "> and payment_amount = #{paymentAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectEscortPaymentStatementByPaymentId" parameterType="Long" resultMap="EscortPaymentStatementResult">
+        <include refid="selectEscortPaymentStatementVo"/>
+        where payment_id = #{paymentId}
+    </select>
+        
+    <insert id="insertEscortPaymentStatement" parameterType="EscortPaymentStatement" useGeneratedKeys="true" keyProperty="paymentId">
+        insert into escort_payment_statement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paymentNo != null and paymentNo != ''">payment_no,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="paymentTime != null">payment_time,</if>
+            <if test="paymentAmount != null">payment_amount,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paymentNo != null and paymentNo != ''">#{paymentNo},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="paymentTime != null">#{paymentTime},</if>
+            <if test="paymentAmount != null">#{paymentAmount},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEscortPaymentStatement" parameterType="EscortPaymentStatement">
+        update escort_payment_statement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paymentNo != null and paymentNo != ''">payment_no = #{paymentNo},</if>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="paymentAmount != null">payment_amount = #{paymentAmount},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where payment_id = #{paymentId}
+    </update>
+
+    <delete id="deleteEscortPaymentStatementByPaymentId" parameterType="Long">
+        delete from escort_payment_statement where payment_id = #{paymentId}
+    </delete>
+
+    <delete id="deleteEscortPaymentStatementByPaymentIds" parameterType="String">
+        delete from escort_payment_statement where payment_id in 
+        <foreach item="paymentId" collection="array" open="(" separator="," close=")">
+            #{paymentId}
+        </foreach>
+    </delete>
+</mapper>

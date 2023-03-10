@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.escort.mapper.EscortProjectMapper">
+    
+    <resultMap type="EscortProject" id="EscortProjectResult">
+        <result property="projectId"    column="project_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="projectAmount"    column="project_amount"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEscortProjectVo">
+        select project_id, project_name, project_amount, del_flag, create_by, create_time, update_by, update_time, remark from escort_project
+    </sql>
+
+    <select id="selectEscortProjectList" parameterType="EscortProject" resultMap="EscortProjectResult">
+        <include refid="selectEscortProjectVo"/>
+        <where>  
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="projectAmount != null "> and project_amount = #{projectAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectEscortProjectByProjectId" parameterType="Long" resultMap="EscortProjectResult">
+        <include refid="selectEscortProjectVo"/>
+        where project_id = #{projectId}
+    </select>
+        
+    <insert id="insertEscortProject" parameterType="EscortProject" useGeneratedKeys="true" keyProperty="projectId">
+        insert into escort_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">project_name,</if>
+            <if test="projectAmount != null">project_amount,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">#{projectName},</if>
+            <if test="projectAmount != null">#{projectAmount},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEscortProject" parameterType="EscortProject">
+        update escort_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="projectAmount != null">project_amount = #{projectAmount},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteEscortProjectByProjectId" parameterType="Long">
+        delete from escort_project where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteEscortProjectByProjectIds" parameterType="String">
+        delete from escort_project where project_id in 
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+</mapper>
