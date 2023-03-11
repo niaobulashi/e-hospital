@@ -169,11 +169,11 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
                     // 执行生成订单的任务
                     log.info("执行生成订单任务时间" + DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date()));
                     randomAssemblyOrder(minSettlementTime);
-                    // 执行此次定时任务 再定时还未执行的时间任务 递归的方式
-                    scheduledCreateOrderTask(settlementTimes);
                 } catch (Exception e) {
                     log.error("生成订单时间：{}，出现异常：{}", DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date()), e);
                 }
+                // 执行此次定时任务 再定时还未执行的时间任务 递归的方式
+                scheduledCreateOrderTask(settlementTimes);
             }, minSettlementTime - nowTime, TimeUnit.MILLISECONDS);
         } else {
             log.info("待执行时间为空,执行生成订单任务结束");
