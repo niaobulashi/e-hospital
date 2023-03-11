@@ -26,7 +26,6 @@ public class RyTask {
     }
 
     public void test() {
-        Set<Long> dates = DateUtils.randomDateLong("2023-03-08 11:28:00", "2023-03-08 11:29:00", 10);
-        DateUtils.scheduledWorkTask(dates);
+
     }
 }

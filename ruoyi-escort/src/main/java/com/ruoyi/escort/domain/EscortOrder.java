@@ -8,13 +8,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 /**
  * 订单列表对象 escort_order
  *
  * @author ruoyi
- * @date 2023-03-10
+ * @date 2023-03-11
  */
 @NoArgsConstructor
 public class EscortOrder extends BaseEntity {
@@ -40,8 +39,8 @@ public class EscortOrder extends BaseEntity {
     /**
      * 预约时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date appointmentTime;
 
     /**
@@ -67,6 +66,20 @@ public class EscortOrder extends BaseEntity {
      */
     @Excel(name = "订单状态", readConverterExp = "0=已付款,1=服务中,2=已完成")
     private String status;
+
+    /**
+     * 完成时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "完成时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date finishTime;
+
+    /**
+     * 计划完成时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "计划完成时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date planFinishTime;
 
     /**
      * 删除标志（0代表存在 2代表删除）
@@ -137,6 +150,22 @@ public class EscortOrder extends BaseEntity {
         return status;
     }
 
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    public void setPlanFinishTime(Date planFinishTime) {
+        this.planFinishTime = planFinishTime;
+    }
+
+    public Date getPlanFinishTime() {
+        return planFinishTime;
+    }
+
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
     }
@@ -156,6 +185,8 @@ public class EscortOrder extends BaseEntity {
                 .append("projectId", getProjectId())
                 .append("escortId", getEscortId())
                 .append("status", getStatus())
+                .append("finishTime", getFinishTime())
+                .append("planFinishTime", getPlanFinishTime())
                 .append("delFlag", getDelFlag())
                 .append("createBy", getCreateBy())
                 .append("createTime", getCreateTime())
@@ -165,7 +196,8 @@ public class EscortOrder extends BaseEntity {
                 .toString();
     }
 
-    public EscortOrder(String orderNo, Long memberId, Date appointmentTime, Long hospitalId, Long projectId, Long escortId, String status) {
+    public EscortOrder(String orderNo, Long memberId, Date appointmentTime, Long hospitalId, Long projectId,
+                       Long escortId, String status, Date planFinishTime) {
         this.orderNo = orderNo;
         this.memberId = memberId;
         this.appointmentTime = appointmentTime;
@@ -173,5 +205,6 @@ public class EscortOrder extends BaseEntity {
         this.projectId = projectId;
         this.escortId = escortId;
         this.status = status;
+        this.planFinishTime = planFinishTime;
     }
 }

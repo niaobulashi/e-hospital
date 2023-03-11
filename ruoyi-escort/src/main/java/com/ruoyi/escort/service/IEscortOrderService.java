@@ -1,14 +1,15 @@
 package com.ruoyi.escort.service;
 
+import com.ruoyi.escort.domain.EscortOrder;
+
 import java.util.List;
 
-import com.ruoyi.escort.domain.EscortOrder;
 
 /**
  * 订单列表Service接口
  *
  * @author ruoyi
- * @date 2023-03-10
+ * @date 2023-03-11
  */
 public interface IEscortOrderService {
     /**
@@ -60,7 +61,7 @@ public interface IEscortOrderService {
     public int deleteEscortOrderByOrderId(Long orderId);
 
     /**
-     * 随机拼装订单信息并保存
+     * 每天根据设置的时间区间，随机生成N条订单
      */
-    public void randomAssemblyOrder();
+    public void createRandomOrder();
 }

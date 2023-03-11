@@ -1,25 +1,16 @@
 package com.ruoyi.common.utils;
 
-import java.lang.management.ManagementFactory;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import cn.hutool.core.util.RandomUtil;
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import com.ruoyi.common.utils.uuid.IdUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.management.ManagementFactory;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 时间工具类
@@ -339,66 +330,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
     }
 
-    static ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2,
-            new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
-
-    /**
-     * 根据时间集合定时执行任务
-     *
-     * @param settlementTimes 需要执行任务的时间集合
-     */
-    public static void scheduledWorkTask(Set<Long> settlementTimes) {
-        long nowTime = System.currentTimeMillis();
-        Long minSettlementTime = minSettlementTime(nowTime, settlementTimes);
-        if (minSettlementTime != null) {
-            logger.info("生成时间为：" + parseDateToStr(YYYY_MM_DD_HH_MM_SS, new Date(minSettlementTime)));
-        }
-        if (minSettlementTime != null) {
-            // schedule 在延迟多少毫秒后 只执行一次
-            scheduledExecutorService.schedule(() -> {
-                // 这里使用try catch 保证定时任务不中断
-                try {
-                    // 自己的代码逻辑
-                    logger.info("执行了任务" + parseDateToStr(YYYY_MM_DD_HH_MM_SS, new Date()));
-                    // 执行此次定时任务 再定时还未执行的时间任务 递归的方式
-                    scheduledWorkTask(settlementTimes);
-                } catch (Exception e) {
-                    logger.info(e.getMessage());
-                }
-            }, minSettlementTime - nowTime, TimeUnit.MILLISECONDS);
-        } else {
-            logger.info("待执行时间为空");
-        }
-    }
-
-    /**
-     * 获取医院营业时间中的随机预约时间
-     * 当天1-3天内的8-17点之间的10整数点
-     */
-    public static Date getAppointmentTimeByHospital() {
-        // RandomUtils.nextInt 左闭右开
-        String date = parseDateToStr(YYYY_MM_DD, getdateAddDay(new Date(), RandomUtils.nextInt(1, 3)));
-        String hour = String.valueOf(RandomUtils.nextInt(8, 17));
-        String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50", "60"});
-        String appointmentTimeStr = date + " " + hour + ":" + minutes + ":00";
-        return dateTime(YYYY_MM_DD_HH_MM_SS, appointmentTimeStr);
-    }
-
     public static void main(String[] args) throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        for (int i = 0; i < 50; i++) {
-            String date = parseDateToStr(YYYY_MM_DD, getdateAddDay(new Date(), RandomUtils.nextInt(1, 4)));
-            String hour = String.valueOf(RandomUtils.nextInt(8, 17));
-            String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50", "00"});
-            String appointmentTimeStr = date + " " + hour + ":" + minutes + ":00";
-            System.out.println("第:" + i + "次：");
-            System.out.println("date:" + date);
-            System.out.println("hour:" + hour);
-            System.out.println("minutes:" + minutes);
-            System.out.println("appointmentTimeStr:" + appointmentTimeStr);
-        }
-
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date baseDate = sdf.parse("2023-03-11 16:50:00");
+//
+//        Date planFinishTime = DateUtil.offsetHour(baseDate, 5).toJdkDate();
+//        String dateStart = DateUtil.offsetHour(baseDate, 4).toString(YYYY_MM_DD_HH_MM_SS);
+//        String dateEnd = DateUtil.offsetHour(baseDate, 7).toString(YYYY_MM_DD_HH_MM_SS);
+//        Set<Long> longSet = DateUtils.randomDateLong(dateStart, dateEnd, 1);
+//        if (longSet != null && longSet.size() > 0) {
+//            planFinishTime = DateUtil.date((Long) longSet.toArray()[0]);
+//        }
+        String id = IdUtils.fastSimpleUUID();
+        System.out.println(id);
     }
 
 }
