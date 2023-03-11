@@ -1,156 +1,177 @@
 package com.ruoyi.escort.domain;
 
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 /**
  * 订单列表对象 escort_order
- * 
+ *
  * @author ruoyi
  * @date 2023-03-10
  */
-public class EscortOrder extends BaseEntity
-{
+@NoArgsConstructor
+public class EscortOrder extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** 订单ID */
+    /**
+     * 订单ID
+     */
     private Long orderId;
 
-    /** 订单号 */
+    /**
+     * 订单号
+     */
     @Excel(name = "订单号")
     private String orderNo;
 
-    /** 会员ID */
+    /**
+     * 会员ID
+     */
     @Excel(name = "会员ID")
     private Long memberId;
 
-    /** 预约时间 */
+    /**
+     * 预约时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date appointmentTime;
 
-    /** 医院ID */
+    /**
+     * 医院ID
+     */
     @Excel(name = "医院ID")
     private Long hospitalId;
 
-    /** 项目ID */
+    /**
+     * 项目ID
+     */
     @Excel(name = "项目ID")
     private Long projectId;
 
-    /** 陪诊员ID */
+    /**
+     * 陪诊员ID
+     */
     @Excel(name = "陪诊员ID")
     private Long escortId;
 
-    /** 订单状态（0已付款 1服务中 2已完成） */
+    /**
+     * 订单状态（0已付款 1服务中 2已完成）
+     */
     @Excel(name = "订单状态", readConverterExp = "0=已付款,1=服务中,2=已完成")
     private String status;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
     private String delFlag;
 
-    public void setOrderId(Long orderId) 
-    {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public Long getOrderId() 
-    {
+    public Long getOrderId() {
         return orderId;
     }
-    public void setOrderNo(String orderNo) 
-    {
+
+    public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
     }
 
-    public String getOrderNo() 
-    {
+    public String getOrderNo() {
         return orderNo;
     }
-    public void setMemberId(Long memberId) 
-    {
+
+    public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
 
-    public Long getMemberId() 
-    {
+    public Long getMemberId() {
         return memberId;
     }
-    public void setAppointmentTime(Date appointmentTime) 
-    {
+
+    public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 
-    public Date getAppointmentTime() 
-    {
+    public Date getAppointmentTime() {
         return appointmentTime;
     }
-    public void setHospitalId(Long hospitalId) 
-    {
+
+    public void setHospitalId(Long hospitalId) {
         this.hospitalId = hospitalId;
     }
 
-    public Long getHospitalId() 
-    {
+    public Long getHospitalId() {
         return hospitalId;
     }
-    public void setProjectId(Long projectId) 
-    {
+
+    public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
 
-    public Long getProjectId() 
-    {
+    public Long getProjectId() {
         return projectId;
     }
-    public void setEscortId(Long escortId) 
-    {
+
+    public void setEscortId(Long escortId) {
         this.escortId = escortId;
     }
 
-    public Long getEscortId() 
-    {
+    public Long getEscortId() {
         return escortId;
     }
-    public void setStatus(String status) 
-    {
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() 
-    {
+    public String getStatus() {
         return status;
     }
-    public void setDelFlag(String delFlag) 
-    {
+
+    public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
     }
 
-    public String getDelFlag() 
-    {
+    public String getDelFlag() {
         return delFlag;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("orderId", getOrderId())
-            .append("orderNo", getOrderNo())
-            .append("memberId", getMemberId())
-            .append("appointmentTime", getAppointmentTime())
-            .append("hospitalId", getHospitalId())
-            .append("projectId", getProjectId())
-            .append("escortId", getEscortId())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("orderId", getOrderId())
+                .append("orderNo", getOrderNo())
+                .append("memberId", getMemberId())
+                .append("appointmentTime", getAppointmentTime())
+                .append("hospitalId", getHospitalId())
+                .append("projectId", getProjectId())
+                .append("escortId", getEscortId())
+                .append("status", getStatus())
+                .append("delFlag", getDelFlag())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("remark", getRemark())
+                .toString();
+    }
+
+    public EscortOrder(String orderNo, Long memberId, Date appointmentTime, Long hospitalId, Long projectId, Long escortId, String status) {
+        this.orderNo = orderNo;
+        this.memberId = memberId;
+        this.appointmentTime = appointmentTime;
+        this.hospitalId = hospitalId;
+        this.projectId = projectId;
+        this.escortId = escortId;
+        this.status = status;
     }
 }

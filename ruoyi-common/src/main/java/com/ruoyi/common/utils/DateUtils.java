@@ -14,6 +14,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.util.RandomUtil;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -136,6 +138,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
      * 计算时间差
+     *
      * @param endDate
      * @param startTime
      * @return
@@ -250,6 +253,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 日期减少几天
+     *
+     * @param d
+     * @param day
+     * @return
+     */
+    public static Date getDateSubtractDay(Date d, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(d);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - day);
+        return calendar.getTime();
+    }
+
+    /**
+     * 日期增加几天
+     *
+     * @param d
+     * @param day
+     * @return
+     */
+    public static Date getdateAddDay(Date d, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(d);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + day);
+        return calendar.getTime();
+    }
+
+    /**
      * 生成size数量的随机时间，位于[start,end)范围内 时间正序排列
      *
      * @param start 开始时间
@@ -308,7 +339,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
     }
 
-    static ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
+    static ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2,
             new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
 
     /**
@@ -340,16 +371,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
     }
 
+    /**
+     * 获取医院营业时间中的随机预约时间
+     * 当天1-3天内的8-17点之间的10整数点
+     */
+    public static Date getAppointmentTimeByHospital() {
+        // RandomUtils.nextInt 左闭右开
+        String date = parseDateToStr(YYYY_MM_DD, getdateAddDay(new Date(), RandomUtils.nextInt(1, 3)));
+        String hour = String.valueOf(RandomUtils.nextInt(8, 17));
+        String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50", "60"});
+        String appointmentTimeStr = date + " " + hour + ":" + minutes + ":00";
+        return dateTime(YYYY_MM_DD_HH_MM_SS, appointmentTimeStr);
+    }
+
     public static void main(String[] args) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-//        List<Date> dates = randomDate("2021-06-21 07:00:00", "2021-06-21 22:00:00", 40);
-//        dates.forEach(t -> System.out.println(sdf.format(t)));
-//        Set<Long> dates = randomDateLong("2021-06-21 07:00:00", "2021-06-21 22:00:00", 40);
-//        dates.forEach(t -> System.out.println(sdf.format(new Date(t))));
-
-        Set<Long> dates = randomDateLong("2023-03-08 11:02:00", "2023-03-08 11:03:00", 10);
-        scheduledWorkTask(dates);
+        for (int i = 0; i < 50; i++) {
+            String date = parseDateToStr(YYYY_MM_DD, getdateAddDay(new Date(), RandomUtils.nextInt(1, 4)));
+            String hour = String.valueOf(RandomUtils.nextInt(8, 17));
+            String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50", "00"});
+            String appointmentTimeStr = date + " " + hour + ":" + minutes + ":00";
+            System.out.println("第:" + i + "次：");
+            System.out.println("date:" + date);
+            System.out.println("hour:" + hour);
+            System.out.println("minutes:" + minutes);
+            System.out.println("appointmentTimeStr:" + appointmentTimeStr);
+        }
 
     }
+
 }
