@@ -32,6 +32,7 @@
         <jwt.version>0.9.1</jwt.version>
         <lombok.version>1.18.26</lombok.version>
         <hutool.version>5.8.15</hutool.version>
+        <random.version>1.0.19</random.version>
     </properties>
 	
     <!-- 依赖声明 -->
@@ -192,6 +193,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <!--common-random-->
+            <dependency>
+                <groupId>com.apifan.common</groupId>
+                <artifactId>common-random</artifactId>
+                <version>${random.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

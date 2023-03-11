@@ -2,6 +2,8 @@ package com.ruoyi.escort.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.apifan.common.random.RandomSource;
+import com.apifan.common.random.source.PersonInfoSource;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.enums.EscortEnums;
 import com.ruoyi.common.utils.DateUtils;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -46,7 +49,6 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
 
     @Autowired
     private ISysConfigService iSysConfigService;
-
 
     static ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(3,
             new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
@@ -143,7 +145,8 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         String startDateStr = DateUtils.getDate() + " " + startTime;
         String endDateStr = DateUtils.getDate() + " " + endTime;
         Set<Long> dates = DateUtils.randomDateLong(startDateStr, endDateStr, count);
-        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end", startDateStr, endDateStr, count);
+        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end,集合为：", startDateStr, endDateStr, count);
+        dates.stream().forEach(aLong -> log.info(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date(aLong))));
         return dates;
     }
 
@@ -185,7 +188,7 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
     public void randomAssemblyOrder(Long settlementTime) {
         log.info("随机拼装订单信息并保存-start");
         // 随机生成会员并保存
-        Long memberId = 0L;
+        Long memberId = getUserId();
         // 随机获取医院
         Long hospitalId = 0L;
         // 随机获取项目
@@ -200,7 +203,7 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         // 状态
         String status = EscortEnums.OrderStatus.PAID.getCode();
         // 订单号
-        String orderNo = "O" + IdUtils.fastSimpleUUID();
+        String orderNo = "O" + IdUtils.getUUIDBySnow();
         EscortOrder order = new EscortOrder(orderNo, memberId, appointmentTime, hospitalId, projectId, escortId, status, planFinishTime);
         order.setCreateBy(Constants.SYS_USER_NAME);
         order.setCreateTime(DateUtils.getNowDate());
@@ -234,5 +237,19 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
             planFinishTime = DateUtil.date((Long) longSet.toArray()[0]);
         }
         return planFinishTime;
+    }
+
+
+    private Long getUserId() {
+
+        Long result = 1l;
+        EscortProject escortProject = new EscortProject();
+        escortProject.setProjectName(PersonInfoSource.getInstance().randomMaleChineseName());
+        escortProject.setUpdateBy("0");//0男1女
+        escortProject.setRemark(RandomSource.personInfoSource().randomChineseMobile());
+        escortProject.setProjectAmount(new BigDecimal("1"));
+        escortProjectService.insertEscortProject(escortProject);
+
+        return escortProject.getProjectId();
     }
 }
