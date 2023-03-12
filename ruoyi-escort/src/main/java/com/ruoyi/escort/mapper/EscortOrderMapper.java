@@ -59,4 +59,17 @@ public interface EscortOrderMapper {
      * @return 结果
      */
     public int deleteEscortOrderByOrderIds(Long[] orderIds);
+
+    /**
+     * 查询预约/计划完成日期为今天的订单列表
+     * @return
+     */
+    public List<EscortOrder>  selectEscortOrderListToday(EscortOrder escortOrder);
+
+    /**
+     * 修改订单状态通过时间参数
+     * @param escortOrder
+     * @return 结果
+     */
+    public int updateEscortOrderByParam(EscortOrder escortOrder);
 }

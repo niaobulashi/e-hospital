@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * 订单列表Service业务层处理
@@ -251,5 +252,89 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         escortProjectService.insertEscortProject(escortProject);
 
         return escortProject.getProjectId();
+    }
+
+    /**
+     * 根据预约日期改变订单状态为服务中
+     */
+    @Override
+    public void changeOrderStatusService() {
+        // 获取预约日期为当天的订单
+        EscortOrder order = new EscortOrder();
+        order.setAppointmentTime(DateUtils.getNowDate());
+        List<EscortOrder> list = escortOrderMapper.selectEscortOrderListToday(order);
+        // 并转为set<预约日期>集合
+        Set<Long> appointmentTimes = list.stream().map(escortOrder -> escortOrder.getAppointmentTime().getTime()).collect(Collectors.toSet());
+        // 执行改变订单状态为服务中任务
+        String status = EscortEnums.OrderStatus.SERVICE.getCode();
+        scheduledChangeOrderStatusTask(appointmentTimes, status);
+    }
+
+    /**
+     * 根据计划完成时间日期改变订单状态为已完成
+     */
+    @Override
+    public void changeOrderStatusFinish() {
+        // 获取计划完成时间为当天的订单
+        EscortOrder order = new EscortOrder();
+        order.setPlanFinishTime(DateUtils.getNowDate());
+        List<EscortOrder> list = escortOrderMapper.selectEscortOrderListToday(order);
+        // 并转为set<计划完成时间>集合
+        Set<Long> planFinishTimes = list.stream().map(escortOrder -> escortOrder.getPlanFinishTime().getTime()).collect(Collectors.toSet());
+        // 执行改变订单状态为服务中任务
+        String status = EscortEnums.OrderStatus.FINISH.getCode();
+        scheduledChangeOrderStatusTask(planFinishTimes, status);
+    }
+
+    /**
+     * 执行改变订单状态任务
+     *
+     * @param times
+     * @param status
+     */
+    private void scheduledChangeOrderStatusTask(Set<Long> times, String status) {
+        long nowTime = System.currentTimeMillis();
+        Long minSettlementTime = DateUtils.minSettlementTime(nowTime, times);
+        if (minSettlementTime != null) {
+            log.info("修改状态为：{}，生成时间为：{}", status, DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date(minSettlementTime)));
+        }
+        if (minSettlementTime != null) {
+            // schedule 在延迟多少毫秒后 只执行一次
+            scheduledExecutorService.schedule(() -> {
+                // 这里使用try catch 保证定时任务不中断
+                try {
+                    // 执行修改订单状态的任务
+                    log.info("执行修改订单状态的任务,状态：{}，时间:{}", status, DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date()));
+                    changeOrderStatus(minSettlementTime, status);
+                } catch (Exception e) {
+                    log.error("执行修改订单状态的任务,状态：{}，时间:{}，出现异常：{}", status, DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date()), e);
+                }
+                // 执行此次定时任务 再定时还未执行的时间任务 递归的方式
+                scheduledChangeOrderStatusTask(times, status);
+            }, minSettlementTime - nowTime, TimeUnit.MILLISECONDS);
+        } else {
+            log.info("待执行时间为空,执行修改订单状态任务结束");
+        }
+    }
+
+    /**
+     * 修改订单状态通过时间参数
+     *
+     * @param time
+     * @param status
+     */
+    public void changeOrderStatus(Long time, String status) {
+        log.info("修改订单列表通过时间参数，状态改为：{}-start", status);
+        EscortOrder order = new EscortOrder();
+        order.setUpdateBy(Constants.SYS_USER_NAME);
+        order.setUpdateTime(DateUtils.getNowDate());
+        order.setStatus(status);
+        if (EscortEnums.OrderStatus.SERVICE.getCode().equals(status)) {
+            order.setAppointmentTime(new Date(time));
+        } else {
+            order.setPlanFinishTime(new Date(time));
+        }
+        escortOrderMapper.updateEscortOrderByParam(order);
+        log.info("修改订单列表通过时间参数-end");
     }
 }

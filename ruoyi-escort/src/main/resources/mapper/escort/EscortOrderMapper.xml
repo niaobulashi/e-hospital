@@ -117,4 +117,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{orderId}
         </foreach>
     </delete>
+
+    <select id="selectEscortOrderListToday" parameterType="EscortOrder" resultMap="EscortOrderResult">
+        <include refid="selectEscortOrderVo"/>
+        <where>
+
+            <if test="appointmentTime != null "> and DATE_FORMAT(appointment_time,"%Y-%m-%d")  =  DATE_FORMAT(#{appointmentTime},"%Y-%m-%d")</if>
+            <if test="planFinishTime != null "> and DATE_FORMAT(planFinishTime,"%Y-%m-%d")  =  DATE_FORMAT(#{planFinishTime},"%Y-%m-%d")</if>
+        </where>
+    </select>
+
+    <update id="updateEscortOrderByParam" parameterType="EscortOrder">
+        update escort_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{status},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        <where>
+            <if test="appointmentTime != null "> and appointment_time = #{appointmentTime}</if>
+            <if test="planFinishTime != null "> and plan_finish_time = #{planFinishTime}</if>
+        </where>
+    </update>
 </mapper>

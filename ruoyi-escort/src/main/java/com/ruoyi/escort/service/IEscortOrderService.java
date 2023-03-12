@@ -64,4 +64,14 @@ public interface IEscortOrderService {
      * 每天根据设置的时间区间，随机生成N条订单
      */
     public void createRandomOrder();
+
+    /**
+     * 根据预约日期改变订单状态为服务中
+     */
+    public void changeOrderStatusService();
+
+    /**
+     * 根据计划完成时间日期改变订单状态为已完成
+     */
+    public void changeOrderStatusFinish();
 }
