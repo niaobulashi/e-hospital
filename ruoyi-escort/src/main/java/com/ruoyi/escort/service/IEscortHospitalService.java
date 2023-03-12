@@ -2,6 +2,7 @@ package com.ruoyi.escort.service;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.escort.domain.EscortHospital;
 
 /**
@@ -58,4 +59,12 @@ public interface IEscortHospitalService {
 	 * @return 结果
 	 */
 	public int deleteEscortHospitalByHospitalId(Long hospitalId);
+	
+	/**
+	 * 修改医院状态
+	 *
+	 * @param escortHospital 医院列表
+	 * @return 结果
+	 */
+	public int updateHospitalStatus(EscortHospital escortHospital);
 }

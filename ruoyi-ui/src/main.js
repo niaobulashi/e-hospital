@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 import Cookies from 'js-cookie'
 
+import '@/directive'
+import axios from 'axios'
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
 
@@ -38,6 +40,7 @@ import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
 
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -71,7 +74,10 @@ DictData.install()
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
+const { mockXHR } = require('@/mock')
+mockXHR()
 
+Vue.prototype.$axios = axios
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })

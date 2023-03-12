@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="医院名称" prop="hospitalName">
         <el-input
@@ -18,22 +19,6 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="服务时间" prop="hospitalServerTime">
-        <el-input
-          v-model="queryParams.hospitalServerTime"
-          placeholder="请输入服务时间"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="地区" prop="hospitalArea">
-        <el-input
-          v-model="queryParams.hospitalArea"
-          placeholder="请输入地区"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item label="地址" prop="hospitalAddress">
         <el-input
@@ -124,14 +109,24 @@
       </el-table-column>
       <el-table-column label="服务时间" align="center" prop="hospitalServerTime" />
       <el-table-column label="地区" align="center" prop="hospitalArea" />
-      <el-table-column label="地址" align="center" prop="hospitalAddress" />
-      <el-table-column label="简介" align="center" prop="hospitalIntroduce" />
-      <el-table-column label="状态" align="center" prop="hospitalStatus">
+      <el-table-column label="地址" align="center" min-width="120" :show-overflow-tooltip="true" prop="hospitalAddress" />
+      <el-table-column label="简介" align="center" min-width="120" :show-overflow-tooltip="true" prop="hospitalIntroduce" />
+      <el-table-column label="状态" align="center" width="100">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.hospitalStatus"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+<!--      <el-table-column label="状态" align="center" prop="hospitalStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.hospitalStatus"/>
         </template>
-      </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -151,7 +146,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -176,11 +171,23 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="服务时间" prop="hospitalServerTime">
-          <el-input v-model="form.hospitalServerTime" placeholder="请输入服务时间" />
+        <el-form-item label="服务时间" prop="hospitalServerTimeList">
+          <el-time-picker
+            is-range
+            v-model="form.hospitalServerTimeList"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            value-format="HH:mm"
+            placeholder="选择时间范围">
+          </el-time-picker>
         </el-form-item>
-        <el-form-item label="地区" prop="hospitalArea">
-          <el-input v-model="form.hospitalArea" placeholder="请输入地区" />
+        <el-form-item label="地区" prop="hospitalAreaList">
+          <div>
+            <ProvincesCascader v-model="form.hospitalAreaList"
+                               placeholder="请选择地区"
+            />
+          </div>
         </el-form-item>
         <el-form-item label="地址" prop="hospitalAddress">
           <el-input v-model="form.hospitalAddress" placeholder="请输入地址" />
@@ -197,12 +204,6 @@
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="删除标志" prop="delFlag">
-          <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -213,13 +214,19 @@
 </template>
 
 <script>
-import { listHospital, getHospital, delHospital, addHospital, updateHospital } from "@/api/escort/hospital";
+import { listHospital, getHospital, delHospital, addHospital, updateHospital, changeHospitalStatus } from "@/api/escort/hospital";
+import ProvincesCascader from '@/components/ProvincesCascader/ProvincesCascader';
 
 export default {
   name: "Hospital",
   dicts: ['sys_normal_disable', 'escort_hospital_type'],
+  components: {
+    ProvincesCascader
+  },
   data() {
     return {
+      showBugSelect: [],
+      provincesCascaderSelect: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -244,8 +251,6 @@ export default {
         pageSize: 10,
         hospitalName: null,
         hospitalType: null,
-        hospitalServerTime: null,
-        hospitalArea: null,
         hospitalAddress: null,
         hospitalIntroduce: null,
         hospitalStatus: null,
@@ -254,6 +259,28 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        hospitalName : [
+          {required: true, message: '请输入医院名称', trigger: 'blur'},
+          {min: 4, max: 50, message: '长度在 4 到 50 个字符', trigger: 'blur'}
+        ],
+        hospitalType : [
+          {required: true, message: '请选择医院类型', trigger: 'blur'}
+        ],
+        hospitalServerTimeList : [
+          {required: true, message: '请选择服务时间', trigger: 'blur'}
+        ],
+        hospitalAreaList : [
+          {required: true, message: '请选择地区', trigger: 'blur'}
+        ],
+        hospitalStatus : [
+          {required: true, message: '请选择状态', trigger: 'blur'}
+        ],
+        hospitalAddress : [
+          {max: 255, message: '长度小于 255 个字符', trigger: 'blur'}
+        ],
+        hospitalIntroduce : [
+          {max: 500, message: '长度小于 500 个字符', trigger: 'blur'}
+        ],
       }
     };
   },
@@ -270,6 +297,17 @@ export default {
         this.loading = false;
       });
     },
+    // 医院列表状态修改
+    handleStatusChange(row) {
+      let text = row.hospitalStatus === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要"' + text + '""' + row.hospitalName + '"吗？').then(function() {
+        return changeHospitalStatus(row.hospitalId, row.hospitalStatus);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.hospitalStatus = row.hospitalStatus === "0" ? "1" : "0";
+      });
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -281,17 +319,13 @@ export default {
         hospitalId: null,
         hospitalName: null,
         hospitalType: null,
-        hospitalServerTime: null,
-        hospitalArea: null,
         hospitalAddress: null,
         hospitalIntroduce: null,
         hospitalStatus: null,
-        delFlag: null,
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null,
-        remark: null
+        updateTime: null
       };
       this.resetForm("form");
     },

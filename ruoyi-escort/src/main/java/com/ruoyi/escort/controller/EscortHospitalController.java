@@ -3,6 +3,8 @@ package com.ruoyi.escort.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.utils.DateUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,5 +96,19 @@ public class EscortHospitalController extends BaseController {
 	@DeleteMapping("/{hospitalIds}")
 	public AjaxResult remove(@PathVariable Long[] hospitalIds) {
 		return toAjax(escortHospitalService.deleteEscortHospitalByHospitalIds(hospitalIds));
+	}
+	
+	
+	/**
+	 * 状态修改
+	 */
+	@PreAuthorize("@ss.hasPermi('escort:hospital:edit')")
+	@Log(title = "医院管理", businessType = BusinessType.UPDATE)
+	@PutMapping("/changeStatus")
+	public AjaxResult changeStatus(@RequestBody EscortHospital escortHospital)
+	{
+		escortHospital.setUpdateBy(getUsername());
+		escortHospital.setUpdateTime(DateUtils.getNowDate());
+		return toAjax(escortHospitalService.updateHospitalStatus(escortHospital));
 	}
 }

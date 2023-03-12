@@ -1,9 +1,12 @@
 package com.ruoyi.escort.domain;
 
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.List;
 
 /**
  * 医院管理对象 escort_hospital
@@ -11,6 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author HuLang
  * @date 2023-03-09
  */
+@Data
 public class EscortHospital extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +36,11 @@ public class EscortHospital extends BaseEntity {
 	private String hospitalType;
 	
 	/**
+	 * 服务时间List
+	 */
+	private List<String> hospitalServerTimeList;
+	
+	/**
 	 * 服务时间
 	 */
 	@Excel(name = "服务时间")
@@ -42,6 +51,11 @@ public class EscortHospital extends BaseEntity {
 	 */
 	@Excel(name = "地区")
 	private String hospitalArea;
+	
+	/**
+	 * 地区List
+	 */
+	private List<String> hospitalAreaList;
 	
 	/**
 	 * 地址
@@ -65,78 +79,6 @@ public class EscortHospital extends BaseEntity {
 	 * 删除标志（0代表存在 2代表删除）
 	 */
 	private String delFlag;
-	
-	public void setHospitalId(Long hospitalId) {
-		this.hospitalId = hospitalId;
-	}
-	
-	public Long getHospitalId() {
-		return hospitalId;
-	}
-	
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
-	}
-	
-	public String getHospitalName() {
-		return hospitalName;
-	}
-	
-	public void setHospitalType(String hospitalType) {
-		this.hospitalType = hospitalType;
-	}
-	
-	public String getHospitalType() {
-		return hospitalType;
-	}
-	
-	public void setHospitalServerTime(String hospitalServerTime) {
-		this.hospitalServerTime = hospitalServerTime;
-	}
-	
-	public String getHospitalServerTime() {
-		return hospitalServerTime;
-	}
-	
-	public void setHospitalArea(String hospitalArea) {
-		this.hospitalArea = hospitalArea;
-	}
-	
-	public String getHospitalArea() {
-		return hospitalArea;
-	}
-	
-	public void setHospitalAddress(String hospitalAddress) {
-		this.hospitalAddress = hospitalAddress;
-	}
-	
-	public String getHospitalAddress() {
-		return hospitalAddress;
-	}
-	
-	public void setHospitalIntroduce(String hospitalIntroduce) {
-		this.hospitalIntroduce = hospitalIntroduce;
-	}
-	
-	public String getHospitalIntroduce() {
-		return hospitalIntroduce;
-	}
-	
-	public void setHospitalStatus(String hospitalStatus) {
-		this.hospitalStatus = hospitalStatus;
-	}
-	
-	public String getHospitalStatus() {
-		return hospitalStatus;
-	}
-	
-	public void setDelFlag(String delFlag) {
-		this.delFlag = delFlag;
-	}
-	
-	public String getDelFlag() {
-		return delFlag;
-	}
 	
 	@Override
 	public String toString() {

@@ -42,3 +42,17 @@ export function delHospital(hospitalId) {
     method: 'delete'
   })
 }
+
+// 角色状态修改
+
+export function changeHospitalStatus(hospitalId, hospitalStatus) {
+  const data = {
+    hospitalId,
+    hospitalStatus
+  }
+  return request({
+    url: '/escort/hospital/changeStatus',
+    method: 'put',
+    data: data
+  })
+}
