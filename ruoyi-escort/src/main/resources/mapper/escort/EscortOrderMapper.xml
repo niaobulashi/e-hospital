@@ -123,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
 
             <if test="appointmentTime != null "> and DATE_FORMAT(appointment_time,"%Y-%m-%d")  =  DATE_FORMAT(#{appointmentTime},"%Y-%m-%d")</if>
-            <if test="planFinishTime != null "> and DATE_FORMAT(planFinishTime,"%Y-%m-%d")  =  DATE_FORMAT(#{planFinishTime},"%Y-%m-%d")</if>
+            <if test="planFinishTime != null "> and DATE_FORMAT(plan_finish_time,"%Y-%m-%d")  =  DATE_FORMAT(#{planFinishTime},"%Y-%m-%d")</if>
         </where>
     </select>
 

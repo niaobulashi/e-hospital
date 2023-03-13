@@ -146,8 +146,9 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         String startDateStr = DateUtils.getDate() + " " + startTime;
         String endDateStr = DateUtils.getDate() + " " + endTime;
         Set<Long> dates = DateUtils.randomDateLong(startDateStr, endDateStr, count);
-        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end,集合为：", startDateStr, endDateStr, count);
-        dates.stream().forEach(aLong -> log.info(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, new Date(aLong))));
+        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end", startDateStr, endDateStr, count);
+        log.info("时间集合为：{}", dates.stream().map(aLong -> DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS,
+                new Date(aLong))).collect(Collectors.joining(",")));
         return dates;
     }
 
