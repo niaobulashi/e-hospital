@@ -26,4 +26,19 @@ public class EscortEnums {
             return info;
         }
     }
+
+    // 所属商家
+    public enum MemberBusiness {
+        bus_01("心运树陪诊");
+
+        private final String name;
+
+        MemberBusiness(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 }

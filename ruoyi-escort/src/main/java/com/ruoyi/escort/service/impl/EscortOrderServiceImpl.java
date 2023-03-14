@@ -2,18 +2,15 @@ package com.ruoyi.escort.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.apifan.common.random.RandomSource;
-import com.apifan.common.random.source.PersonInfoSource;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.enums.EscortEnums;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.RandInfoUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
-import com.ruoyi.escort.domain.EscortOrder;
-import com.ruoyi.escort.domain.EscortProject;
+import com.ruoyi.escort.domain.*;
 import com.ruoyi.escort.mapper.EscortOrderMapper;
-import com.ruoyi.escort.service.IEscortOrderService;
-import com.ruoyi.escort.service.IEscortProjectService;
+import com.ruoyi.escort.service.*;
 import com.ruoyi.system.service.ISysConfigService;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -47,6 +44,18 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
 
     @Autowired
     private IEscortProjectService escortProjectService;
+
+    @Autowired
+    private IEscortHospitalService escortHospitalService;
+
+    @Autowired
+    private IEscortManageService escortManageService;
+
+    @Autowired
+    private IEscortPaymentStatementService escortPaymentStatementService;
+
+    @Autowired
+    private IEscortMemberService escortMemberService;
 
     @Autowired
     private ISysConfigService iSysConfigService;
@@ -143,10 +152,11 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         String startTime = iSysConfigService.selectConfigByKey("create.order.time.start");
         String endTime = iSysConfigService.selectConfigByKey("create.order.time.end");
         int count = Integer.parseInt(iSysConfigService.selectConfigByKey("create.order.count"));
+        int createCount = RandomUtil.randomInt(count - 3, count + 3);
         String startDateStr = DateUtils.getDate() + " " + startTime;
         String endDateStr = DateUtils.getDate() + " " + endTime;
-        Set<Long> dates = DateUtils.randomDateLong(startDateStr, endDateStr, count);
-        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end", startDateStr, endDateStr, count);
+        Set<Long> dates = DateUtils.randomDateLong(startDateStr, endDateStr, createCount);
+        log.info("每天根据设置的时间区间{}-{}，获取{}个订单生成时间集合-end", startDateStr, endDateStr, createCount);
         log.info("时间集合为：{}", dates.stream().map(aLong -> DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS,
                 new Date(aLong))).collect(Collectors.joining(",")));
         return dates;
@@ -192,16 +202,20 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         // 随机生成会员并保存
         Long memberId = getUserId();
         // 随机获取医院
-        Long hospitalId = 0L;
+        List<EscortHospital> hospitalList = escortHospitalService.selectEscortHospitalList(new EscortHospital());
+        Long hospitalId = RandomUtil.randomEle(hospitalList).getHospitalId();
         // 随机获取项目
         List<EscortProject> projectList = escortProjectService.selectEscortProjectList(new EscortProject());
-        Long projectId = RandomUtil.randomEle(projectList).getProjectId();
+        EscortProject escortProject = RandomUtil.randomEle(projectList);
+        Long projectId = escortProject.getProjectId();
+        BigDecimal projectAmount = escortProject.getProjectAmount();
         // 随机生成预约时间
         Date appointmentTime = getAppointmentTimeByHospital(new Date(settlementTime));
         // 随机生成计划完成时间
         Date planFinishTime = getPlanFinishTime(appointmentTime);
         // 随机获取陪诊员
-        Long escortId = 0L;
+        List<EscortManage> manageList = escortManageService.selectEscortManageList(new EscortManage());
+        Long escortId = RandomUtil.randomEle(manageList).getEscortId();
         // 状态
         String status = EscortEnums.OrderStatus.PAID.getCode();
         // 订单号
@@ -210,6 +224,8 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         order.setCreateBy(Constants.SYS_USER_NAME);
         order.setCreateTime(DateUtils.getNowDate());
         escortOrderMapper.insertEscortOrder(order);
+        // 生成支付单流水
+        insertPayment(order.getOrderNo(), projectAmount);
         log.info("随机拼装订单信息并保存-end");
     }
 
@@ -241,18 +257,41 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         return planFinishTime;
     }
 
+    /**
+     * 生成支付单流水
+     *
+     * @param orderNo
+     * @param amount
+     */
+    private void insertPayment(String orderNo, BigDecimal amount) {
+        log.info("生成支付单流水-start,参数为：订单号-{}，金额-{}", orderNo, amount);
+        EscortPaymentStatement escortPaymentStatement = new EscortPaymentStatement();
+        escortPaymentStatement.setPaymentNo("P" + IdUtils.getUUIDBySnow());
+        escortPaymentStatement.setPaymentAmount(amount);
+        escortPaymentStatement.setPaymentTime(new Date());
+        escortPaymentStatement.setOrderNo(orderNo);
+        escortPaymentStatement.setCreateBy(Constants.SYS_USER_NAME);
+        escortPaymentStatementService.insertEscortPaymentStatement(escortPaymentStatement);
+        log.info("生成支付单流水-end");
+    }
 
+    /**
+     * 生成会员信息并保存
+     *
+     * @return
+     */
     private Long getUserId() {
+        log.info("生成会员信息并保存-start");
+        EscortMember escortMember = new EscortMember();
+        escortMember.setMemberBusinessName(EscortEnums.MemberBusiness.bus_01.getName());
+        escortMember.setMemberCorpName(EscortEnums.MemberBusiness.bus_01.getName());
+        String[] nameAndSex = RandInfoUtils.getFamilyNameAndSex();
+        escortMember.setMemberName(nameAndSex[0]);
+        escortMember.setMemberPhone(nameAndSex[1]);
+        escortMemberService.insertEscortMember(escortMember);
+        log.info("生成会员信息并保存-end");
 
-        Long result = 1l;
-        EscortProject escortProject = new EscortProject();
-        escortProject.setProjectName(PersonInfoSource.getInstance().randomMaleChineseName());
-        escortProject.setUpdateBy("0");//0男1女
-        escortProject.setRemark(RandomSource.personInfoSource().randomChineseMobile());
-        escortProject.setProjectAmount(new BigDecimal("1"));
-        escortProjectService.insertEscortProject(escortProject);
-
-        return escortProject.getProjectId();
+        return escortMember.getMemberId();
     }
 
     /**
