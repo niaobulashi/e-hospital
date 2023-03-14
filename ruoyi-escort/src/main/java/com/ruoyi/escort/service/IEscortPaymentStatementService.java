@@ -58,4 +58,13 @@ public interface IEscortPaymentStatementService
      * @return 结果
      */
     public int deleteEscortPaymentStatementByPaymentId(Long paymentId);
+
+    /**
+     * 查询支付单流水列表-带会员
+     *
+     * @param escortPaymentStatement 支付单流水
+     * @return 支付单流水集合
+     */
+    public List<EscortPaymentStatement> selectEscortPaymentAndMemList(EscortPaymentStatement escortPaymentStatement);
+
 }

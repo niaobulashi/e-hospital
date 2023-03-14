@@ -3,7 +3,8 @@ import request from '@/utils/request'
 // 查询支付单流水列表
 export function listPayment(query) {
   return request({
-    url: '/escort/payment/list',
+    // url: '/escort/payment/list',
+    url: '/escort/payment/memlist',
     method: 'get',
     params: query
   })

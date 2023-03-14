@@ -2,6 +2,7 @@ package com.ruoyi.escort.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.apifan.common.random.RandomSource;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.enums.EscortEnums;
 import com.ruoyi.common.utils.DateUtils;
@@ -237,7 +238,7 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         // RandomUtils.nextInt 左闭右开
         String date = DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, DateUtils.getdateAddDay(baseDate, RandomUtils.nextInt(1, 4)));
         String hour = String.valueOf(RandomUtils.nextInt(8, 16));
-        String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50", "60"});
+        String minutes = RandomUtil.randomEle(new String[]{"10", "20", "30", "40", "50"});
         String appointmentTimeStr = date + " " + hour + ":" + minutes + ":00";
         return DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS, appointmentTimeStr);
     }
@@ -287,7 +288,7 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         escortMember.setMemberCorpName(EscortEnums.MemberBusiness.bus_01.getName());
         String[] nameAndSex = RandInfoUtils.getFamilyNameAndSex();
         escortMember.setMemberName(nameAndSex[0]);
-        escortMember.setMemberPhone(nameAndSex[1]);
+        escortMember.setMemberPhone(RandomSource.personInfoSource().randomChineseMobile());
         escortMemberService.insertEscortMember(escortMember);
         log.info("生成会员信息并保存-end");
 
@@ -376,5 +377,16 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         }
         escortOrderMapper.updateEscortOrderByParam(order);
         log.info("修改订单列表通过时间参数-end");
+    }
+
+    /**
+     * 查询订单列表列表-带附加信息
+     *
+     * @param escortOrder 订单列表
+     * @return 订单列表
+     */
+    @Override
+    public List<EscortOrder> selectEscortOrderInfoList(EscortOrder escortOrder) {
+        return escortOrderMapper.selectEscortOrderInfoList(escortOrder);
     }
 }

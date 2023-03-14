@@ -101,4 +101,16 @@ public class EscortOrderController extends BaseController
     {
         return toAjax(escortOrderService.deleteEscortOrderByOrderIds(orderIds));
     }
+
+    /**
+     * 查询订单列表列表-带附加信息
+     */
+    @PreAuthorize("@ss.hasPermi('escort:order:list')")
+    @GetMapping("/infoList")
+    public TableDataInfo infoList(EscortOrder escortOrder)
+    {
+        startPage();
+        List<EscortOrder> list = escortOrderService.selectEscortOrderInfoList(escortOrder);
+        return getDataTable(list);
+    }
 }

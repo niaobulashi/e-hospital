@@ -90,6 +90,8 @@
       <el-table-column label="支付流水ID" align="center" prop="paymentId" />
       <el-table-column label="支付流水号" align="center" prop="paymentNo" />
       <el-table-column label="订单号" align="center" prop="orderNo" />
+<!--      <el-table-column label="会员编号" align="center" prop="memberId" />-->
+      <el-table-column label="会员姓名" align="center" prop="memberName" />
       <el-table-column label="支付时间" align="center" prop="paymentTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.paymentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>

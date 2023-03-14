@@ -47,6 +47,18 @@ public class EscortPaymentStatementController extends BaseController
     }
 
     /**
+     * 查询支付单流水列表-带用户信息
+     */
+    @PreAuthorize("@ss.hasPermi('escort:payment:list')")
+    @GetMapping("/memlist")
+    public TableDataInfo memlist(EscortPaymentStatement escortPaymentStatement)
+    {
+        startPage();
+        List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentAndMemList(escortPaymentStatement);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出支付单流水列表
      */
     @PreAuthorize("@ss.hasPermi('escort:payment:export')")

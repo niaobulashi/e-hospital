@@ -74,4 +74,12 @@ public interface IEscortOrderService {
      * 根据计划完成时间日期改变订单状态为已完成
      */
     public void changeOrderStatusFinish();
+
+    /**
+     * 查询订单列表列表-带附加信息
+     *
+     * @param escortOrder 订单列表
+     * @return 订单列表集合
+     */
+    public List<EscortOrder> selectEscortOrderInfoList(EscortOrder escortOrder);
 }

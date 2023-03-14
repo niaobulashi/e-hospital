@@ -72,4 +72,12 @@ public interface EscortOrderMapper {
      * @return 结果
      */
     public int updateEscortOrderByParam(EscortOrder escortOrder);
+
+    /**
+     * 查询订单列表列表-带附加信息
+     *
+     * @param escortOrder 订单列表
+     * @return 订单列表集合
+     */
+    public List<EscortOrder> selectEscortOrderInfoList(EscortOrder escortOrder);
 }

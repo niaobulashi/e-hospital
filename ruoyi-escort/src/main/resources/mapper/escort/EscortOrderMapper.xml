@@ -21,6 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="hospitalName"    column="hospital_name"    />
+        <result property="escortName"    column="escort_name"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="projectAmount"    column="project_amount"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="memberPhone"    column="member_phone"    />
     </resultMap>
 
     <sql id="selectEscortOrderVo">
@@ -142,4 +148,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="planFinishTime != null "> and plan_finish_time = #{planFinishTime}</if>
         </where>
     </update>
+
+    <select id="selectEscortOrderInfoList" parameterType="EscortOrder" resultMap="EscortOrderResult">
+        select
+        t.order_id,
+        t.order_no,
+        t.member_id,
+        t.appointment_time,
+        t.hospital_id,
+        t.project_id,
+        t.escort_id,
+        t.status,
+        t.finish_time,
+        t.plan_finish_time,
+        t.del_flag,
+        t.create_by,
+        t.create_time,
+        t.update_by,
+        t.update_time,
+        t.remark,
+        t1.hospital_name,
+        t2.escort_name,
+        t3.project_name,
+        t3.project_amount,
+        t4.member_name,
+        t4.member_phone
+        from
+        escort_order t
+        left join escort_hospital t1 on t1.hospital_id = t.hospital_id
+        left join escort_manage t2 on t2.escort_id = t.escort_id
+        left join escort_project t3 on t3.project_id = t.project_id
+        left join escort_member t4 on t4.member_id = t.member_id
+        <where>
+            <if test="orderNo != null  and orderNo != ''"> and t.order_no = #{orderNo}</if>
+            <if test="memberId != null "> and t.member_id = #{memberId}</if>
+            <if test="appointmentTime != null "> and t.appointment_time = #{appointmentTime}</if>
+            <if test="hospitalId != null "> and t.hospital_id = #{hospitalId}</if>
+            <if test="projectId != null "> and t.project_id = #{projectId}</if>
+            <if test="escortId != null "> and t.escort_id = #{escortId}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+            <if test="finishTime != null "> and t.finish_time = #{finishTime}</if>
+            <if test="planFinishTime != null "> and t.plan_finish_time = #{planFinishTime}</if>
+        </where>
+    </select>
 </mapper>

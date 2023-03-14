@@ -16,6 +16,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="memberId"    column="member_id"    />
     </resultMap>
 
     <sql id="selectEscortPaymentStatementVo">
@@ -92,4 +94,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{paymentId}
         </foreach>
     </delete>
+
+    <select id="selectEscortPaymentAndMemList" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
+        SELECT
+        t.payment_id,
+        t.payment_no,
+        t.order_no,
+        t.payment_time,
+        t.payment_amount,
+        t.del_flag,
+        t.create_by,
+        t.create_time,
+        t.update_by,
+        t.update_time,
+        t.remark,
+        t2.member_name,
+        t2.member_id
+        FROM
+        escort_payment_statement t
+        left join escort_order t1 on t1.order_no = t.order_no
+        left join escort_member t2 on t2.member_id = t1.member_id
+        <where>
+            <if test="paymentNo != null  and paymentNo != ''"> and t.payment_no = #{paymentNo}</if>
+            <if test="orderNo != null  and orderNo != ''"> and t.order_no = #{orderNo}</if>
+            <if test="paymentTime != null "> and t.payment_time = #{paymentTime}</if>
+            <if test="paymentAmount != null "> and t.payment_amount = #{paymentAmount}</if>
+        </where>
+    </select>
 </mapper>

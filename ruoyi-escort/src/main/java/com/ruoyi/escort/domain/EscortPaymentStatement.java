@@ -3,6 +3,8 @@ package com.ruoyi.escort.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -14,6 +16,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-03-10
  */
+@Data
+@ToString
 public class EscortPaymentStatement extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -41,75 +45,10 @@ public class EscortPaymentStatement extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    public void setPaymentId(Long paymentId) 
-    {
-        this.paymentId = paymentId;
-    }
+    /** 会员名称 */
+    private String memberName;
 
-    public Long getPaymentId() 
-    {
-        return paymentId;
-    }
-    public void setPaymentNo(String paymentNo) 
-    {
-        this.paymentNo = paymentNo;
-    }
+    /** 会员编号 */
+    private String memberId;
 
-    public String getPaymentNo() 
-    {
-        return paymentNo;
-    }
-    public void setOrderNo(String orderNo) 
-    {
-        this.orderNo = orderNo;
-    }
-
-    public String getOrderNo() 
-    {
-        return orderNo;
-    }
-    public void setPaymentTime(Date paymentTime) 
-    {
-        this.paymentTime = paymentTime;
-    }
-
-    public Date getPaymentTime() 
-    {
-        return paymentTime;
-    }
-    public void setPaymentAmount(BigDecimal paymentAmount) 
-    {
-        this.paymentAmount = paymentAmount;
-    }
-
-    public BigDecimal getPaymentAmount() 
-    {
-        return paymentAmount;
-    }
-    public void setDelFlag(String delFlag) 
-    {
-        this.delFlag = delFlag;
-    }
-
-    public String getDelFlag() 
-    {
-        return delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("paymentId", getPaymentId())
-            .append("paymentNo", getPaymentNo())
-            .append("orderNo", getOrderNo())
-            .append("paymentTime", getPaymentTime())
-            .append("paymentAmount", getPaymentAmount())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
-    }
 }

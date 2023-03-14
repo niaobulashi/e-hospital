@@ -93,4 +93,16 @@ public class EscortPaymentStatementServiceImpl implements IEscortPaymentStatemen
     {
         return escortPaymentStatementMapper.deleteEscortPaymentStatementByPaymentId(paymentId);
     }
+
+    /**
+     * 查询支付单流水列表-带会员
+     *
+     * @param escortPaymentStatement 支付单流水
+     * @return 支付单流水
+     */
+    @Override
+    public List<EscortPaymentStatement> selectEscortPaymentAndMemList(EscortPaymentStatement escortPaymentStatement)
+    {
+        return escortPaymentStatementMapper.selectEscortPaymentAndMemList(escortPaymentStatement);
+    }
 }

@@ -136,17 +136,27 @@
       <el-table-column label="订单ID" align="center" prop="orderId"/>
       <el-table-column label="订单号" align="center" prop="orderNo"/>
       <el-table-column label="会员ID" align="center" prop="memberId"/>
+      <el-table-column label="会员姓名" align="center" prop="memberName"/>
+      <el-table-column label="会员手机" align="center" prop="memberPhone"/>
+<!--      <el-table-column label="医院ID" align="center" prop="hospitalId"/>-->
+      <el-table-column label="医院名称" align="center" prop="hospitalName"/>
+<!--      <el-table-column label="项目ID" align="center" prop="projectId"/>-->
+      <el-table-column label="项目名称" align="center" prop="projectName"/>
+      <el-table-column label="项目金额" align="center" prop="projectAmount"/>
+      <el-table-column label="陪诊员ID" align="center" prop="escortId"/>
+      <el-table-column label="陪诊员姓名" align="center" prop="escortName"/>
       <el-table-column label="预约时间" align="center" prop="appointmentTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.appointmentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="医院ID" align="center" prop="hospitalId"/>
-      <el-table-column label="项目ID" align="center" prop="projectId"/>
-      <el-table-column label="陪诊员ID" align="center" prop="escortId"/>
       <el-table-column label="订单状态" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.escort_order_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="完成时间" align="center" prop="finishTime" width="180">
@@ -154,11 +164,11 @@
           <span>{{ parseTime(scope.row.finishTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="计划完成时间" align="center" prop="planFinishTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.planFinishTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="计划完成时间" align="center" prop="planFinishTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.planFinishTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
