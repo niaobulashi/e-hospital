@@ -95,7 +95,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -164,6 +164,18 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        memberBusinessName: [
+          { required: true, message: "所属商家不能为空", trigger: "change" }
+        ],
+        memberCorpName: [
+          { required: true, message: "所属机构不能为空", trigger: "blur" }
+        ],
+        memberName: [
+          { required: true, message: "姓名不能为空", trigger: "blur" }
+        ],
+        memberPhone: [
+          { required: true, message: "手机不能为空", trigger: "change" }
+        ],
       }
     };
   },

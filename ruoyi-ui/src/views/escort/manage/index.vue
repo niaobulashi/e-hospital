@@ -1,6 +1,15 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+
+      <el-radio-group v-model="queryParams.escortAutitStatus" size="small" @change="handleQuery">
+        <el-radio-button label="">全部</el-radio-button>
+        <el-radio-button label="1">已通过</el-radio-button>
+        <el-radio-button label="0">待审核</el-radio-button>
+        <el-radio-button label="2">未通过</el-radio-button>
+      </el-radio-group>
+      <div style="flex: 1" />
+      <br>
       <el-form-item label="所属商家" prop="escortBusinessName">
         <el-input
           v-model="queryParams.escortBusinessName"
@@ -50,16 +59,6 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="审核状态" prop="escortAutitStatus">
-        <el-select v-model="queryParams.escortAutitStatus" placeholder="请选择审核状态" clearable>
-          <el-option
-            v-for="dict in dict.type.escort_audit_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -301,6 +300,30 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        escortBusinessName: [
+          { required: true, message: "所属商家不能为空", trigger: "blur" }
+        ],
+        escortCorpName: [
+          { required: true, message: "所属机构不能为空", trigger: "blur" }
+        ],
+        escortName: [
+          { required: true, message: "姓名不能为空", trigger: "blur" }
+        ],
+        escortPhone: [
+          { required: true, message: "手机不能为空", trigger: "blur" }
+        ],
+        escortSex: [
+          { required: true, message: "性别不能为空", trigger: "change" }
+        ],
+        escortAge: [
+          { required: true, message: "年龄不能为空", trigger: "blur" }
+        ],
+        escortNativePlaceList: [
+          { required: true, message: "籍贯不能为空", trigger: "blur" }
+        ],
+        escortAutitStatus: [
+          { required: true, message: "审核状态不能为空", trigger: "change" }
+        ],
       }
     };
   },
