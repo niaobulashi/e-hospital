@@ -129,7 +129,7 @@
       <el-table-column label="护龄" align="center" prop="escortNursingAge" />
       <el-table-column label="籍贯" align="center" prop="escortNativePlace" />
       <el-table-column label="住址" align="center" prop="escortAddress" />
-      <el-table-column label="个人简介" align="center" prop="escortIntroduce" />
+      <el-table-column label="个人简介" align="center" prop="escortIntroduce" min-width="120" :show-overflow-tooltip="true"/>
       <el-table-column label="身份证号" align="center" prop="escortIdentityCard" />
       <el-table-column label="身份证正面" align="center" prop="escortIdentityCardFront" width="100">
         <template slot-scope="scope">
@@ -141,7 +141,12 @@
           <image-preview :src="scope.row.escortIdentityCardBack" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="体检报告" align="center" prop="escortReport" min-width="120" :show-overflow-tooltip="true"/>
+
+      <el-table-column label="体检报告" align="center" prop="escortReport" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.escortReport" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
       <el-table-column label="审核状态" align="center" prop="escortAutitStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.escort_audit_status" :value="scope.row.escortAutitStatus"/>
@@ -225,7 +230,7 @@
           <image-upload v-model="form.escortIdentityCardBack"/>
         </el-form-item>
         <el-form-item label="体检报告" prop="escortReport">
-          <file-upload v-model="form.escortReport"/>
+          <image-upload v-model="form.escortReport"/>
         </el-form-item>
         <el-form-item label="审核状态" prop="escortAutitStatus">
           <el-radio-group v-model="form.escortAutitStatus">

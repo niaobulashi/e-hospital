@@ -43,8 +43,7 @@ export function delHospital(hospitalId) {
   })
 }
 
-// 角色状态修改
-
+// 医院状态修改
 export function changeHospitalStatus(hospitalId, hospitalStatus) {
   const data = {
     hospitalId,
