@@ -178,9 +178,7 @@
         </el-form-item>
         <el-form-item label="地区" prop="hospitalAreaList">
           <div>
-            <ProvincesCascader v-model="form.hospitalAreaList"
-                               placeholder="请选择地区"
-            />
+            <ProvincesCascader v-model="form.hospitalAreaList" placeholder="请选择地区"/>
           </div>
         </el-form-item>
         <el-form-item label="地址" prop="hospitalAddress">
@@ -314,6 +312,8 @@ export default {
         hospitalName: null,
         hospitalType: null,
         hospitalAddress: null,
+        hospitalArea: null,
+        hospitalAreaList: null,
         hospitalIntroduce: null,
         hospitalStatus: null,
         createBy: null,

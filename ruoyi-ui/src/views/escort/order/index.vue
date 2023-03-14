@@ -49,6 +49,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable>
+          <el-option
+            v-for="dict in dict.type.escort_order_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="完成时间" prop="finishTime">
         <el-date-picker clearable
                         v-model="queryParams.finishTime"
@@ -134,7 +144,11 @@
       <el-table-column label="医院ID" align="center" prop="hospitalId"/>
       <el-table-column label="项目ID" align="center" prop="projectId"/>
       <el-table-column label="陪诊员ID" align="center" prop="escortId"/>
-      <el-table-column label="订单状态" align="center" prop="status"/>
+      <el-table-column label="订单状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.escort_order_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="完成时间" align="center" prop="finishTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.finishTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
@@ -235,6 +249,7 @@ import {listOrder, getOrder, delOrder, addOrder, updateOrder} from "@/api/escort
 
 export default {
   name: "Order",
+  dicts: ['escort_order_status'],
   data() {
     return {
       // 遮罩层

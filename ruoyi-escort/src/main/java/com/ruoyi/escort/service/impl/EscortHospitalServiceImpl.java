@@ -70,7 +70,6 @@ public class EscortHospitalServiceImpl implements IEscortHospitalService {
 	}
 	
 	
-	
 	/**
 	 * 修改医院管理
 	 *
@@ -115,8 +114,7 @@ public class EscortHospitalServiceImpl implements IEscortHospitalService {
 	 * @return 结果
 	 */
 	@Override
-	public int updateHospitalStatus(EscortHospital escortHospital)
-	{
+	public int updateHospitalStatus(EscortHospital escortHospital) {
 		return escortHospitalMapper.updateEscortHospital(escortHospital);
 	}
 }

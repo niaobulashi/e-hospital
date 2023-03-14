@@ -1,9 +1,12 @@
 package com.ruoyi.escort.domain;
 
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.List;
 
 /**
  * 陪诊师管理对象 escort_manage
@@ -11,6 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author Hulang
  * @date 2023-03-14
  */
+@Data
 public class EscortManage extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -76,6 +80,11 @@ public class EscortManage extends BaseEntity {
      */
     @Excel(name = "籍贯")
     private String escortNativePlace;
+    
+    /**
+     * 籍贯List
+     */
+    private List<String> escortNativePlaceList;
 
     /**
      * 住址
@@ -124,157 +133,6 @@ public class EscortManage extends BaseEntity {
      */
     private String delFlag;
 
-    public void setEscortId(Long escortId) {
-        this.escortId = escortId;
-    }
-
-    public Long getEscortId() {
-        return escortId;
-    }
-
-    public void setEscortBusinessId(Long escortBusinessId) {
-        this.escortBusinessId = escortBusinessId;
-    }
-
-    public Long getEscortBusinessId() {
-        return escortBusinessId;
-    }
-
-    public void setEscortBusinessName(String escortBusinessName) {
-        this.escortBusinessName = escortBusinessName;
-    }
-
-    public String getEscortBusinessName() {
-        return escortBusinessName;
-    }
-
-    public void setEscortCorpId(Long escortCorpId) {
-        this.escortCorpId = escortCorpId;
-    }
-
-    public Long getEscortCorpId() {
-        return escortCorpId;
-    }
-
-    public void setEscortCorpName(String escortCorpName) {
-        this.escortCorpName = escortCorpName;
-    }
-
-    public String getEscortCorpName() {
-        return escortCorpName;
-    }
-
-    public void setEscortName(String escortName) {
-        this.escortName = escortName;
-    }
-
-    public String getEscortName() {
-        return escortName;
-    }
-
-    public void setEscortPhone(String escortPhone) {
-        this.escortPhone = escortPhone;
-    }
-
-    public String getEscortPhone() {
-        return escortPhone;
-    }
-
-    public void setEscortSex(String escortSex) {
-        this.escortSex = escortSex;
-    }
-
-    public String getEscortSex() {
-        return escortSex;
-    }
-
-    public void setEscortAge(String escortAge) {
-        this.escortAge = escortAge;
-    }
-
-    public String getEscortAge() {
-        return escortAge;
-    }
-
-    public void setEscortNursingAge(String escortNursingAge) {
-        this.escortNursingAge = escortNursingAge;
-    }
-
-    public String getEscortNursingAge() {
-        return escortNursingAge;
-    }
-
-    public void setEscortNativePlace(String escortNativePlace) {
-        this.escortNativePlace = escortNativePlace;
-    }
-
-    public String getEscortNativePlace() {
-        return escortNativePlace;
-    }
-
-    public void setEscortAddress(String escortAddress) {
-        this.escortAddress = escortAddress;
-    }
-
-    public String getEscortAddress() {
-        return escortAddress;
-    }
-
-    public void setEscortIntroduce(String escortIntroduce) {
-        this.escortIntroduce = escortIntroduce;
-    }
-
-    public String getEscortIntroduce() {
-        return escortIntroduce;
-    }
-
-    public void setEscortIdentityCard(String escortIdentityCard) {
-        this.escortIdentityCard = escortIdentityCard;
-    }
-
-    public String getEscortIdentityCard() {
-        return escortIdentityCard;
-    }
-
-    public void setEscortIdentityCardFront(String escortIdentityCardFront) {
-        this.escortIdentityCardFront = escortIdentityCardFront;
-    }
-
-    public String getEscortIdentityCardFront() {
-        return escortIdentityCardFront;
-    }
-
-    public void setEscortIdentityCardBack(String escortIdentityCardBack) {
-        this.escortIdentityCardBack = escortIdentityCardBack;
-    }
-
-    public String getEscortIdentityCardBack() {
-        return escortIdentityCardBack;
-    }
-
-    public void setEscortReport(String escortReport) {
-        this.escortReport = escortReport;
-    }
-
-    public String getEscortReport() {
-        return escortReport;
-    }
-
-    public void setEscortAutitStatus(String escortAutitStatus) {
-        this.escortAutitStatus = escortAutitStatus;
-    }
-
-    public String getEscortAutitStatus() {
-        return escortAutitStatus;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
 
     @Override
     public String toString() {

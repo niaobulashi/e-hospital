@@ -211,8 +211,10 @@
         <el-form-item label="护龄" prop="escortNursingAge">
           <el-input v-model="form.escortNursingAge" placeholder="请输入护龄" />
         </el-form-item>
-        <el-form-item label="籍贯" prop="escortNativePlace">
-          <el-input v-model="form.escortNativePlace" placeholder="请输入籍贯" />
+        <el-form-item label="籍贯" prop="escortNativePlaceList">
+          <div>
+            <ProvincesCascader v-model="form.escortNativePlaceList" placeholder="请输入籍贯"/>
+          </div>
         </el-form-item>
         <el-form-item label="住址" prop="escortAddress">
           <el-input v-model="form.escortAddress" placeholder="请输入住址" />
@@ -252,12 +254,18 @@
 
 <script>
 import { listManage, getManage, delManage, addManage, updateManage } from "@/api/escort/manage";
+import ProvincesCascader from '@/components/ProvincesCascader/ProvincesCascader';
 
 export default {
   name: "Manage",
   dicts: ['sys_user_sex', 'escort_audit_status'],
+  components: {
+    ProvincesCascader
+  },
   data() {
     return {
+      showBugSelect: [],
+      provincesCascaderSelect: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -328,6 +336,7 @@ export default {
         escortAge: null,
         escortNursingAge: null,
         escortNativePlace: null,
+        escortNativePlaceList: null,
         escortAddress: null,
         escortIntroduce: null,
         escortIdentityCard: null,
