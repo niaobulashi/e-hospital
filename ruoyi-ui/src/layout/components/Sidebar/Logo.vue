@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '心运树陪诊后台系统',
       logo: logoImg
     }
   }

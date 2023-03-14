@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
+  "name": "escort",
   "version": "3.8.5",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "心运树陪诊后台系统",
+  "author": "zh",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
