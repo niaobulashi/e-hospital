@@ -121,12 +121,6 @@
           ></el-switch>
         </template>
       </el-table-column>
-
-<!--      <el-table-column label="状态" align="center" prop="hospitalStatus">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.hospitalStatus"/>
-        </template>
-      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

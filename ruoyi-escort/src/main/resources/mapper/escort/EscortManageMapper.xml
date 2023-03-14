@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.escort.mapper.EscortManageMapper">
+    
+    <resultMap type="EscortManage" id="EscortManageResult">
+        <result property="escortId"    column="escort_id"    />
+        <result property="escortBusinessId"    column="escort_business_id"    />
+        <result property="escortBusinessName"    column="escort_business_name"    />
+        <result property="escortCorpId"    column="escort_corp_id"    />
+        <result property="escortCorpName"    column="escort_corp_name"    />
+        <result property="escortName"    column="escort_name"    />
+        <result property="escortPhone"    column="escort_phone"    />
+        <result property="escortSex"    column="escort_sex"    />
+        <result property="escortAge"    column="escort_age"    />
+        <result property="escortNursingAge"    column="escort_nursing_age"    />
+        <result property="escortNativePlace"    column="escort_native_place"    />
+        <result property="escortAddress"    column="escort_address"    />
+        <result property="escortIntroduce"    column="escort_introduce"    />
+        <result property="escortIdentityCard"    column="escort_identity_card"    />
+        <result property="escortIdentityCardFront"    column="escort_identity_card_front"    />
+        <result property="escortIdentityCardBack"    column="escort_identity_card_back"    />
+        <result property="escortReport"    column="escort_report"    />
+        <result property="escortAutitStatus"    column="escort_autit_status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEscortManageVo">
+        select escort_id, escort_business_id, escort_business_name, escort_corp_id, escort_corp_name, escort_name, escort_phone, escort_sex, escort_age, escort_nursing_age, escort_native_place, escort_address, escort_introduce, escort_identity_card, escort_identity_card_front, escort_identity_card_back, escort_report, escort_autit_status, del_flag, create_by, create_time, update_by, update_time, remark from escort_manage
+    </sql>
+
+    <select id="selectEscortManageList" parameterType="EscortManage" resultMap="EscortManageResult">
+        <include refid="selectEscortManageVo"/>
+        <where>  
+            <if test="escortBusinessName != null  and escortBusinessName != ''"> and escort_business_name like concat('%', #{escortBusinessName}, '%')</if>
+            <if test="escortCorpName != null  and escortCorpName != ''"> and escort_corp_name like concat('%', #{escortCorpName}, '%')</if>
+            <if test="escortName != null  and escortName != ''"> and escort_name like concat('%', #{escortName}, '%')</if>
+            <if test="escortPhone != null  and escortPhone != ''"> and escort_phone like concat('%', #{escortPhone}, '%')</if>
+            <if test="escortSex != null  and escortSex != ''"> and escort_sex = #{escortSex}</if>
+            <if test="escortAddress != null  and escortAddress != ''"> and escort_address like concat('%', #{escortAddress}, '%')</if>
+            <if test="escortIntroduce != null  and escortIntroduce != ''"> and escort_introduce like concat('%', #{escortIntroduce}, '%')</if>
+            <if test="escortAutitStatus != null  and escortAutitStatus != ''"> and escort_autit_status = #{escortAutitStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectEscortManageByEscortId" parameterType="Long" resultMap="EscortManageResult">
+        <include refid="selectEscortManageVo"/>
+        where escort_id = #{escortId}
+    </select>
+        
+    <insert id="insertEscortManage" parameterType="EscortManage" useGeneratedKeys="true" keyProperty="escortId">
+        insert into escort_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="escortBusinessId != null">escort_business_id,</if>
+            <if test="escortBusinessName != null">escort_business_name,</if>
+            <if test="escortCorpId != null">escort_corp_id,</if>
+            <if test="escortCorpName != null">escort_corp_name,</if>
+            <if test="escortName != null">escort_name,</if>
+            <if test="escortPhone != null">escort_phone,</if>
+            <if test="escortSex != null">escort_sex,</if>
+            <if test="escortAge != null">escort_age,</if>
+            <if test="escortNursingAge != null">escort_nursing_age,</if>
+            <if test="escortNativePlace != null">escort_native_place,</if>
+            <if test="escortAddress != null">escort_address,</if>
+            <if test="escortIntroduce != null">escort_introduce,</if>
+            <if test="escortIdentityCard != null">escort_identity_card,</if>
+            <if test="escortIdentityCardFront != null">escort_identity_card_front,</if>
+            <if test="escortIdentityCardBack != null">escort_identity_card_back,</if>
+            <if test="escortReport != null">escort_report,</if>
+            <if test="escortAutitStatus != null">escort_autit_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="escortBusinessId != null">#{escortBusinessId},</if>
+            <if test="escortBusinessName != null">#{escortBusinessName},</if>
+            <if test="escortCorpId != null">#{escortCorpId},</if>
+            <if test="escortCorpName != null">#{escortCorpName},</if>
+            <if test="escortName != null">#{escortName},</if>
+            <if test="escortPhone != null">#{escortPhone},</if>
+            <if test="escortSex != null">#{escortSex},</if>
+            <if test="escortAge != null">#{escortAge},</if>
+            <if test="escortNursingAge != null">#{escortNursingAge},</if>
+            <if test="escortNativePlace != null">#{escortNativePlace},</if>
+            <if test="escortAddress != null">#{escortAddress},</if>
+            <if test="escortIntroduce != null">#{escortIntroduce},</if>
+            <if test="escortIdentityCard != null">#{escortIdentityCard},</if>
+            <if test="escortIdentityCardFront != null">#{escortIdentityCardFront},</if>
+            <if test="escortIdentityCardBack != null">#{escortIdentityCardBack},</if>
+            <if test="escortReport != null">#{escortReport},</if>
+            <if test="escortAutitStatus != null">#{escortAutitStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEscortManage" parameterType="EscortManage">
+        update escort_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="escortBusinessId != null">escort_business_id = #{escortBusinessId},</if>
+            <if test="escortBusinessName != null">escort_business_name = #{escortBusinessName},</if>
+            <if test="escortCorpId != null">escort_corp_id = #{escortCorpId},</if>
+            <if test="escortCorpName != null">escort_corp_name = #{escortCorpName},</if>
+            <if test="escortName != null">escort_name = #{escortName},</if>
+            <if test="escortPhone != null">escort_phone = #{escortPhone},</if>
+            <if test="escortSex != null">escort_sex = #{escortSex},</if>
+            <if test="escortAge != null">escort_age = #{escortAge},</if>
+            <if test="escortNursingAge != null">escort_nursing_age = #{escortNursingAge},</if>
+            <if test="escortNativePlace != null">escort_native_place = #{escortNativePlace},</if>
+            <if test="escortAddress != null">escort_address = #{escortAddress},</if>
+            <if test="escortIntroduce != null">escort_introduce = #{escortIntroduce},</if>
+            <if test="escortIdentityCard != null">escort_identity_card = #{escortIdentityCard},</if>
+            <if test="escortIdentityCardFront != null">escort_identity_card_front = #{escortIdentityCardFront},</if>
+            <if test="escortIdentityCardBack != null">escort_identity_card_back = #{escortIdentityCardBack},</if>
+            <if test="escortReport != null">escort_report = #{escortReport},</if>
+            <if test="escortAutitStatus != null">escort_autit_status = #{escortAutitStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where escort_id = #{escortId}
+    </update>
+
+    <delete id="deleteEscortManageByEscortId" parameterType="Long">
+        delete from escort_manage where escort_id = #{escortId}
+    </delete>
+
+    <delete id="deleteEscortManageByEscortIds" parameterType="String">
+        delete from escort_manage where escort_id in 
+        <foreach item="escortId" collection="array" open="(" separator="," close=")">
+            #{escortId}
+        </foreach>
+    </delete>
+</mapper>
