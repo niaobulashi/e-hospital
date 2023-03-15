@@ -182,7 +182,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="orderNo != null  and orderNo != ''"> and t.order_no = #{orderNo}</if>
             <if test="memberId != null "> and t.member_id = #{memberId}</if>
-            <if test="appointmentTime != null "> and t.appointment_time = #{appointmentTime}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and t.appointment_time &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and t.appointment_time &lt;= #{params.endTime}
+            </if>
             <if test="hospitalId != null "> and t.hospital_id = #{hospitalId}</if>
             <if test="projectId != null "> and t.project_id = #{projectId}</if>
             <if test="escortId != null "> and t.escort_id = #{escortId}</if>

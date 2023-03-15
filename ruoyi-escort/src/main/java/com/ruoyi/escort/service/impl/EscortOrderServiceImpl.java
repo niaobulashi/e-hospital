@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+
 /**
  * 订单列表Service业务层处理
  *
@@ -388,6 +389,14 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
      */
     @Override
     public List<EscortOrder> selectEscortOrderInfoList(EscortOrder escortOrder) {
+        // 预约开始日期-1
+        if (escortOrder.getParams().containsKey("beginTime")) {
+            escortOrder.getParams().put("beginTime", DateUtils.dateTime(DateUtils.getDateSubtractDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortOrder.getParams().get("beginTime").toString()), 1)));
+        }
+        // 预约结束日期+1
+        if (escortOrder.getParams().containsKey("endTime")) {
+            escortOrder.getParams().put("endTime", DateUtils.dateTime(DateUtils.getdateAddDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortOrder.getParams().get("endTime").toString()), 1)));
+        }
         return escortOrderMapper.selectEscortOrderInfoList(escortOrder);
     }
 }

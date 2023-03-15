@@ -17,13 +17,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="支付时间" prop="paymentTime">
-        <el-date-picker clearable
-          v-model="queryParams.paymentTime"
-          type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          placeholder="请选择支付时间">
-        </el-date-picker>
+      <el-form-item label="支付时间">
+        <el-date-picker
+          v-model="dateRange"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          :default-value="this.dateRange"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="支付金额" prop="paymentAmount">
         <el-input
@@ -180,6 +185,8 @@ export default {
       total: 0,
       // 支付单流水表格数据
       paymentList: [],
+      // 日期范围
+      dateRange: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -206,17 +213,68 @@ export default {
         paymentAmount: [
           { required: true, message: "支付金额不能为空", trigger: "blur" }
         ],
+      },
+      // 日期选择器
+      pickerOptions: {
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            const end = new Date();
+            end.setHours(23, 59, 59);
+            const start = new Date(end);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 7 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 30 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 90 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一年',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 365 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
       }
     };
   },
   created() {
+    this.dateRange.push(this.handleTimeOld(new Date())) // handleTimeOld是我用来获取当月的第一天的
+    this.dateRange.push(this.handleTimeNew(new Date())) // handleTimeNew是获取今天的日期
     this.getList();
   },
   methods: {
     /** 查询支付单流水列表 */
     getList() {
       this.loading = true;
-      listPayment(this.queryParams).then(response => {
+      listPayment(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
         this.paymentList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -311,6 +369,25 @@ export default {
       this.download('escort/payment/export', {
         ...this.queryParams
       }, `payment_${new Date().getTime()}.xlsx`)
+    },
+    // 是我用来获取当月的第一天的
+    handleTimeOld(time, split) {
+      let date = new Date(time);
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      split = '-';
+      return [year, month, 1].map(num => this.formatNumber(num)).join(split);
+    },
+    // handleTimeNew是获取今天的日期
+    handleTimeNew(time) {
+      let date = new Date(time);
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1));
+      let day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+      return `${year}-${month}-${day}`;
+    },
+    formatNumber(number) {
+      return String(number)[1] ? String(number) : `0${number}`;
     }
   }
 };

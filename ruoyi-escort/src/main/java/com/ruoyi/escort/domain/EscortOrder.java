@@ -45,6 +45,12 @@ public class EscortOrder extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date appointmentTime;
+    
+    /** 预约开始时间 */
+    private String beginTime;
+    
+    /** 预约结束时间 */
+    private String endTime;
 
     /**
      * 医院ID

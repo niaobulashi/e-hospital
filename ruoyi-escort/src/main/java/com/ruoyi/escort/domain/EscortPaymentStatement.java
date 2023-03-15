@@ -37,6 +37,12 @@ public class EscortPaymentStatement extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "支付时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date paymentTime;
+    
+    /** 支付开始时间 */
+    private String beginTime;
+    
+    /** 支付结束时间 */
+    private String endTime;
 
     /** 支付金额 */
     @Excel(name = "支付金额")

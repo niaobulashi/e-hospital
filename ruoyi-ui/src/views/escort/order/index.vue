@@ -25,14 +25,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="预约时间" prop="appointmentTime">
-        <el-date-picker clearable
-                        v-model="queryParams.appointmentTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择预约时间">
-        </el-date-picker>
-      </el-form-item>
       <el-form-item label="医院ID" prop="hospitalId">
         <el-input
           v-model="queryParams.hospitalId"
@@ -57,20 +49,26 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+
+      <el-form-item label="预约时间">
+        <el-date-picker
+          v-model="appointmentDateRange"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          :default-value="this.appointmentDateRange"
+        ></el-date-picker>
+      </el-form-item>
       <el-form-item label="完成时间" prop="finishTime">
         <el-date-picker clearable
                         v-model="queryParams.finishTime"
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="请选择完成时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="计划完成时间" prop="planFinishTime">
-        <el-date-picker clearable
-                        v-model="queryParams.planFinishTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择计划完成时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -274,6 +272,9 @@ export default {
       total: 0,
       // 订单列表表格数据
       orderList: [],
+      // 预约日期范围
+      appointmentDateRange: [],
+      finishDateRange: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -311,17 +312,68 @@ export default {
         escortId: [
           {required: true, message: "陪诊员ID不能为空", trigger: "blur"}
         ],
+      },
+      // 日期选择器
+      pickerOptions: {
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            const end = new Date();
+            end.setHours(23, 59, 59);
+            const start = new Date(end);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 7 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 30 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 90 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一年',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            end.setHours(23, 59, 59);
+            start.setTime(end.getTime() - 3600 * 1000 * 24 * 365 + 1000);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
       }
     };
   },
   created() {
+    this.appointmentDateRange.push(this.handleTimeOld(new Date())) // handleTimeOld是我用来获取当月的第一天的
+    this.appointmentDateRange.push(this.handleTimeNew(new Date())) // handleTimeNew是获取今天的日期
     this.getList();
   },
   methods: {
     /** 查询订单列表列表 */
     getList() {
       this.loading = true;
-      listOrder(this.queryParams).then(response => {
+      listOrder(this.addDateRange(this.queryParams, this.appointmentDateRange)).then(response => {
         this.orderList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -422,6 +474,25 @@ export default {
       this.download('escort/order/export', {
         ...this.queryParams
       }, `order_${new Date().getTime()}.xlsx`)
+    },
+    // 是我用来获取当月的第一天的
+    handleTimeOld(time, split) {
+      let date = new Date(time);
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      split = '-';
+      return [year, month, 1].map(num => this.formatNumber(num)).join(split);
+    },
+    // handleTimeNew是获取今天的日期
+    handleTimeNew(time) {
+      let date = new Date(time);
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1));
+      let day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+      return `${year}-${month}-${day}`;
+    },
+    formatNumber(number) {
+      return String(number)[1] ? String(number) : `0${number}`;
     }
   }
 };
