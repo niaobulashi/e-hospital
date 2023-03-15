@@ -373,6 +373,7 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         if (EscortEnums.OrderStatus.SERVICE.getCode().equals(status)) {
             order.setAppointmentTime(new Date(time));
         } else {
+            order.setFinishTime(DateUtils.getNowDate());
             order.setPlanFinishTime(new Date(time));
         }
         escortOrderMapper.updateEscortOrderByParam(order);
