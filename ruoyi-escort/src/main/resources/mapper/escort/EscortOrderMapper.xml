@@ -190,5 +190,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="finishTime != null "> and t.finish_time = #{finishTime}</if>
             <if test="planFinishTime != null "> and t.plan_finish_time = #{planFinishTime}</if>
         </where>
+        order by t.create_time desc,t.order_id desc
     </select>
 </mapper>
