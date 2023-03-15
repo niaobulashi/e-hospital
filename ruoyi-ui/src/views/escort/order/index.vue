@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-radio-group v-model="queryParams.status" size="small" @change="handleQuery">
+        <el-radio-button label="">全部</el-radio-button>
+        <el-radio-button label="0">已付款</el-radio-button>
+        <el-radio-button label="1">服务中</el-radio-button>
+        <el-radio-button label="2">已完成</el-radio-button>
+      </el-radio-group>
+      <div style="flex: 1" />
+      <br>
       <el-form-item label="订单号" prop="orderNo">
         <el-input
           v-model="queryParams.orderNo"
@@ -48,16 +56,6 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="订单状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable>
-          <el-option
-            v-for="dict in dict.type.escort_order_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item label="完成时间" prop="finishTime">
         <el-date-picker clearable

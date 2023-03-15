@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-
       <el-radio-group v-model="queryParams.escortAutitStatus" size="small" @change="handleQuery">
         <el-radio-button label="">全部</el-radio-button>
         <el-radio-button label="1">已通过</el-radio-button>
