@@ -298,7 +298,7 @@ export default {
         escortSex: null,
         escortAddress: null,
         escortIntroduce: null,
-        escortAutitStatus: null,
+        escortAutitStatus: "",
       },
       // 表单参数
       form: {},

@@ -290,7 +290,7 @@ export default {
         hospitalId: null,
         projectId: null,
         escortId: null,
-        status: null,
+        status: "",
         finishTime: null,
         planFinishTime: null,
       },
