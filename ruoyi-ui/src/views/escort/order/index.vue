@@ -53,7 +53,7 @@
       <el-form-item label="预约时间">
         <el-date-picker
           v-model="appointmentDateRange"
-          style="width: 240px"
+          style="width: 208px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
@@ -128,24 +128,22 @@
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
+<!--      <el-table-column type="selection" width="55" align="center"/>-->
       <el-table-column label="订单ID" align="center" prop="orderId"/>
-      <el-table-column label="订单号" align="center" prop="orderNo"/>
+      <el-table-column label="订单号" width="200" align="center" prop="orderNo"/>
       <el-table-column label="会员ID" align="center" prop="memberId"/>
       <el-table-column label="会员姓名" align="center" prop="memberName"/>
-      <el-table-column label="会员手机" align="center" prop="memberPhone">
+      <el-table-column label="会员手机" width="150" align="center" prop="memberPhone">
         <template slot-scope="scope">
           {{scope.row.memberPhone? scope.row.memberPhone.replace(/^(.{3})(?:\w+)(.{4})$/,
           "\$1****\$2"):""}}
         </template>
       </el-table-column>
-<!--      <el-table-column label="医院ID" align="center" prop="hospitalId"/>-->
-      <el-table-column label="医院名称" align="center" prop="hospitalName"/>
-<!--      <el-table-column label="项目ID" align="center" prop="projectId"/>-->
-      <el-table-column label="项目名称" align="center" prop="projectName"/>
-      <el-table-column label="项目金额" align="center" prop="projectAmount"/>
+      <el-table-column label="医院名称" width="200" min-width="200" :show-overflow-tooltip="true" align="center" prop="hospitalName"/>
+      <el-table-column label="项目名称" width="100" min-width="100" :show-overflow-tooltip="true" align="center" prop="projectName"/>
+      <el-table-column label="项目金额（元）" width="150" align="center" prop="projectAmount"/>
       <el-table-column label="陪诊员ID" align="center" prop="escortId"/>
-      <el-table-column label="陪诊员姓名" align="center" prop="escortName"/>
+      <el-table-column label="陪诊员姓名" width="150" min-width="150" :show-overflow-tooltip="true" align="center" prop="escortName"/>
       <el-table-column label="预约时间" align="center" prop="appointmentTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.appointmentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
@@ -170,8 +168,7 @@
 <!--          <span>{{ parseTime(scope.row.planFinishTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="备注" align="center" prop="remark"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -190,7 +187,7 @@
           >删除
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -370,8 +367,8 @@ export default {
     };
   },
   created() {
-    this.appointmentDateRange.push(this.handleTimeOld(new Date())) // handleTimeOld是我用来获取当月的第一天的
-    this.appointmentDateRange.push(this.handleTimeNew(new Date())) // handleTimeNew是获取今天的日期
+    this.appointmentDateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
+    this.appointmentDateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
     this.getList();
   },
   methods: {
@@ -483,17 +480,16 @@ export default {
     // 是我用来获取当月的第一天的
     handleTimeOld(time, split) {
       let date = new Date(time);
-      let year = date.getFullYear();
       let month = date.getMonth() + 1;
+      let year = date.getFullYear();
       split = '-';
       return [year, month, 1].map(num => this.formatNumber(num)).join(split);
     },
-    // handleTimeNew是获取今天的日期
+    // handleTimeNew是获取当月最后一日
     handleTimeNew(time) {
-      let date = new Date(time);
-      let year = date.getFullYear();
-      let month = (date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1));
-      let day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+      let year = new Date().getFullYear(); //获取年份
+      let month = new Date().getMonth() + 1; //获取月份
+      let day = new Date(year, month, 0).getDate(); //获取当月最后一日
       return `${year}-${month}-${day}`;
     },
     formatNumber(number) {

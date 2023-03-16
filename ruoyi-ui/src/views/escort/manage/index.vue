@@ -113,11 +113,11 @@
 
     <el-table v-loading="loading" :data="manageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="陪诊师编号" align="center" prop="escortId" />
-      <el-table-column label="所属商家" align="center" prop="escortBusinessName" />
-      <el-table-column label="所属机构" align="center" prop="escortCorpName" />
-      <el-table-column label="姓名" align="center" prop="escortName" />
-      <el-table-column label="手机" align="center" prop="escortPhone">
+      <el-table-column label="陪诊师编号" width="100" align="center" prop="escortId" />
+      <el-table-column label="所属商家" align="center" width="150" :show-overflow-tooltip="true" prop="escortBusinessName" />
+      <el-table-column label="所属机构" align="center" width="150" :show-overflow-tooltip="true" prop="escortCorpName" />
+      <el-table-column label="姓名" align="center" width="150" :show-overflow-tooltip="true" prop="escortName" />
+      <el-table-column label="手机" align="center" width="150" prop="escortPhone">
       <template slot-scope="scope">
         {{scope.row.escortPhone? scope.row.escortPhone.replace(/^(.{3})(?:\w+)(.{4})$/,
         "\$1****\$2"):""}}
@@ -130,10 +130,10 @@
       </el-table-column>
       <el-table-column label="年龄" align="center" prop="escortAge" />
       <el-table-column label="护龄" align="center" prop="escortNursingAge" />
-      <el-table-column label="籍贯" align="center" prop="escortNativePlace" />
-      <el-table-column label="住址" align="center" prop="escortAddress" />
+      <el-table-column label="籍贯" align="center" width="150" :show-overflow-tooltip="true" prop="escortNativePlace" />
+      <el-table-column label="住址" align="center" width="150" :show-overflow-tooltip="true" prop="escortAddress" />
       <el-table-column label="个人简介" align="center" prop="escortIntroduce" min-width="120" :show-overflow-tooltip="true"/>
-      <el-table-column label="身份证号" align="center" prop="escortIdentityCard" />
+      <el-table-column label="身份证号" align="center" width="180" :show-overflow-tooltip="true" prop="escortIdentityCard" />
       <el-table-column label="身份证正面" align="center" prop="escortIdentityCardFront" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.escortIdentityCardFront" :width="50" :height="50"/>

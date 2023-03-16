@@ -20,7 +20,7 @@
       <el-form-item label="支付时间">
         <el-date-picker
           v-model="dateRange"
-          style="width: 240px"
+          style="width: 208px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
@@ -91,20 +91,18 @@
     </el-row>
 
     <el-table v-loading="loading" :data="paymentList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="支付流水ID" align="center" prop="paymentId" />
       <el-table-column label="支付流水号" align="center" prop="paymentNo" />
       <el-table-column label="订单号" align="center" prop="orderNo" />
-<!--      <el-table-column label="会员编号" align="center" prop="memberId" />-->
       <el-table-column label="会员姓名" align="center" prop="memberName" />
       <el-table-column label="支付时间" align="center" prop="paymentTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.paymentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付金额" align="center" prop="paymentAmount" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="支付金额（元）" align="center" prop="paymentAmount" />
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -121,7 +119,7 @@
             v-hasPermi="['escort:payment:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -266,8 +264,8 @@ export default {
     };
   },
   created() {
-    this.dateRange.push(this.handleTimeOld(new Date())) // handleTimeOld是我用来获取当月的第一天的
-    this.dateRange.push(this.handleTimeNew(new Date())) // handleTimeNew是获取今天的日期
+    this.dateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
+    this.dateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
     this.getList();
   },
   methods: {
@@ -378,12 +376,11 @@ export default {
       split = '-';
       return [year, month, 1].map(num => this.formatNumber(num)).join(split);
     },
-    // handleTimeNew是获取今天的日期
+    // handleTimeNew是获取当月最后一日
     handleTimeNew(time) {
-      let date = new Date(time);
-      let year = date.getFullYear();
-      let month = (date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1));
-      let day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+      let year = new Date().getFullYear(); //获取年份
+      let month = new Date().getMonth() + 1; //获取月份
+      let day = new Date(year, month, 0).getDate(); //获取当月最后一日
       return `${year}-${month}-${day}`;
     },
     formatNumber(number) {

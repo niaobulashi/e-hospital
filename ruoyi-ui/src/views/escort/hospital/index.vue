@@ -100,17 +100,17 @@
 
     <el-table v-loading="loading" :data="hospitalList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="医院编号" align="center" prop="hospitalId" />
-      <el-table-column label="医院名称" align="center" prop="hospitalName" />
+      <el-table-column label="医院编号" align="center" width="100" prop="hospitalId" />
+      <el-table-column label="医院名称" align="center" width="160" :show-overflow-tooltip="true" prop="hospitalName" />
       <el-table-column label="医院类型" align="center" prop="hospitalType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.escort_hospital_type" :value="scope.row.hospitalType"/>
         </template>
       </el-table-column>
       <el-table-column label="服务时间" align="center" prop="hospitalServerTime" />
-      <el-table-column label="地区" align="center" prop="hospitalArea" />
-      <el-table-column label="地址" align="center" min-width="120" :show-overflow-tooltip="true" prop="hospitalAddress" />
-      <el-table-column label="简介" align="center" min-width="120" :show-overflow-tooltip="true" prop="hospitalIntroduce" />
+      <el-table-column label="地区" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalArea" />
+      <el-table-column label="地址" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalAddress" />
+      <el-table-column label="简介" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalIntroduce" />
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">
           <el-switch
@@ -185,7 +185,7 @@
           <el-input v-model="form.hospitalAddress" placeholder="请输入地址" />
         </el-form-item>
         <el-form-item label="简介" prop="hospitalIntroduce">
-          <el-input v-model="form.hospitalIntroduce" placeholder="请输入简介" />
+          <el-input v-model="form.hospitalIntroduce" type="textarea" placeholder="请输入简介" />
         </el-form-item>
         <el-form-item label="状态" prop="hospitalStatus">
           <el-radio-group v-model="form.hospitalStatus">
