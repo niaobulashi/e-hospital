@@ -60,6 +60,7 @@ import CountTo from 'vue-count-to'
 import {listMember} from "@/api/escort/member";
 import {listManage} from "@/api/escort/manage";
 import {listOrder} from "@/api/escort/order";
+import {queryPaymentByDate} from "@/api/escort/payment";
 
 export default {
   components: {
@@ -71,6 +72,10 @@ export default {
       manageCount: 0,
       paymentAmount: 0,
       finishOrder: 0,
+      // 支付流水查询参数
+      payQueryParams: {
+        targetPaymentTime: this.$moment().format('YYYY-MM-DD')
+      },
       // 订单查询参数
       orderQueryParams: {
         status: '2',
@@ -90,7 +95,9 @@ export default {
       });
     },
     getPaymentAmount() {
-      this.paymentAmount = 1115515.25;
+      queryPaymentByDate(this.payQueryParams).then(response => {
+        this.paymentAmount = response.paymentAmount;
+      });
     },
     getFinishOrder() {
       listOrder(this.orderQueryParams).then(response => {

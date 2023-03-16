@@ -142,4 +142,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY
             date_format( t.payment_time, '%Y-%m-%d' ) ASC
     </select>
+
+    <select id="queryPaymentByDate" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
+        SELECT
+            date_format(t.payment_time, '%Y-%m-%d') payment_time,
+            sum(t.payment_amount) payment_amount
+        FROM
+            escort_payment_statement t
+        WHERE
+                date_format(t.payment_time, '%Y-%m-%d') = date_format(#{targetPaymentTime}, '%Y-%m-%d')
+        GROUP BY
+            date_format(t.payment_time, '%Y-%m-%d')
+    </select>
 </mapper>

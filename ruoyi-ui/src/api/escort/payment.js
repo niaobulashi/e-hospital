@@ -44,6 +44,15 @@ export function delPayment(paymentId) {
   })
 }
 
+// 查询指定日期的支付流水
+export function queryPaymentByDate(query) {
+  return request({
+    url: '/escort/payment/queryPaymentByDate',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询支付单流水列表
 export function paySumAmount(query) {
   return request({

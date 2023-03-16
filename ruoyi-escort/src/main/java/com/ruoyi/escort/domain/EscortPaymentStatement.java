@@ -57,4 +57,10 @@ public class EscortPaymentStatement extends BaseEntity
     /** 会员编号 */
     private String memberId;
 
+    /**
+     * 目标支付日期（目前用于首页查看当日完成的流水额）
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String targetPaymentTime;
+
 }
