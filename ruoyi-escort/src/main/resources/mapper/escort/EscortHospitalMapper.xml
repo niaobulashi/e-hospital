@@ -32,8 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="hospitalType != null  and hospitalType != ''"> and hospital_type = #{hospitalType}</if>
             <if test="hospitalServerTime != null  and hospitalServerTime != ''"> and hospital_server_time = #{hospitalServerTime}</if>
             <if test="hospitalArea != null  and hospitalArea != ''"> and hospital_area = #{hospitalArea}</if>
-            <if test="hospitalAddress != null  and hospitalAddress != ''"> and hospital_address = #{hospitalAddress}</if>
-            <if test="hospitalIntroduce != null  and hospitalIntroduce != ''"> and hospital_introduce = #{hospitalIntroduce}</if>
+            <if test="hospitalAddress != null  and hospitalAddress != ''"> and hospital_address like concat('%', #{hospitalAddress}, '%')</if>
+            <if test="hospitalIntroduce != null  and hospitalIntroduce != ''"> and hospital_introduce like concat('%', #{hospitalIntroduce}, '%')</if>
             <if test="hospitalStatus != null  and hospitalStatus != ''"> and hospital_status = #{hospitalStatus}</if>
         </where>
     </select>

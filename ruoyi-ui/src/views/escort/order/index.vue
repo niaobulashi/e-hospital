@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="85px">
       <el-radio-group v-model="queryParams.status" size="small" @change="handleQuery">
         <el-radio-button label="">全部</el-radio-button>
         <el-radio-button label="0">已付款</el-radio-button>
@@ -17,34 +17,34 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="会员ID" prop="memberId">
+      <el-form-item label="会员姓名" prop="memberName">
         <el-input
-          v-model="queryParams.memberId"
-          placeholder="请输入会员ID"
+          v-model="queryParams.memberName"
+          placeholder="请输入会员姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="医院ID" prop="hospitalId">
+      <el-form-item label="医院名称" prop="hospitalName">
         <el-input
-          v-model="queryParams.hospitalId"
-          placeholder="请输入医院ID"
+          v-model="queryParams.hospitalName"
+          placeholder="请输入医院名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目ID" prop="projectId">
+      <el-form-item label="项目名称" prop="projectName">
         <el-input
-          v-model="queryParams.projectId"
-          placeholder="请输入项目ID"
+          v-model="queryParams.projectName"
+          placeholder="请输入项目名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="陪诊员ID" prop="escortId">
+      <el-form-item label="陪诊员姓名" prop="escortName">
         <el-input
-          v-model="queryParams.escortId"
-          placeholder="请输入陪诊员ID"
+          v-model="queryParams.escortName"
+          placeholder="请输入陪诊员姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -52,23 +52,26 @@
       <el-form-item label="预约时间">
         <el-date-picker
           v-model="appointmentDateRange"
-          style="width: 208px"
+          style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :picker-options="pickerOptions"
-          :default-value="this.appointmentDateRange"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="完成时间" prop="finishTime">
-        <el-date-picker clearable
-                        v-model="queryParams.finishTime"
-                        type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择完成时间">
-        </el-date-picker>
+      <el-form-item label="完成时间">
+        <el-date-picker
+          v-model="finishDateRange"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -152,7 +155,8 @@
         <template slot-scope="scope">
           <dict-tag :options="dict.type.escort_order_status" :value="scope.row.status"/>
         </template>
-      </el-table-column>      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
+      </el-table-column>
+      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
@@ -285,11 +289,11 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderNo: null,
-        memberId: null,
+        memberName: null,
         appointmentTime: null,
-        hospitalId: null,
-        projectId: null,
-        escortId: null,
+        hospitalName: null,
+        projectName: null,
+        escortName: null,
         status: "",
         finishTime: null,
         planFinishTime: null,
@@ -366,15 +370,17 @@ export default {
     };
   },
   created() {
-    this.appointmentDateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
-    this.appointmentDateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
+    //this.appointmentDateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
+    //this.appointmentDateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
+    //this.finishDateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
+    //this.finishDateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
     this.getList();
   },
   methods: {
     /** 查询订单列表列表 */
     getList() {
       this.loading = true;
-      listOrder(this.addDateRange(this.queryParams, this.appointmentDateRange)).then(response => {
+      listOrder(this.addDateRangeTwo(this.queryParams, this.appointmentDateRange, this.finishDateRange)).then(response => {
         this.orderList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -403,8 +409,9 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        remark: null
+        remark: null,
       };
+
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -414,6 +421,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.appointmentDateRange = [];
+      this.finishDateRange = [];
       this.resetForm("queryForm");
       this.handleQuery();
     },

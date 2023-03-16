@@ -68,6 +68,29 @@ export function addDateRange(params, dateRange, propName) {
   return search;
 }
 
+// 添加日期范围，两个日期范围区间选择
+export function addDateRangeTwo(params, dateRange, dateRangeTwo) {
+  let search = params;
+  search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
+  dateRange = Array.isArray(dateRange) ? dateRange : [];
+  dateRangeTwo = Array.isArray(dateRangeTwo) ? dateRangeTwo : [];
+  if (dateRange.length > 0) {
+    search.params['beginTime'] = dateRange[0];
+    search.params['endTime'] = dateRange[1];
+  } else {
+    search.params['beginTime'] = '';
+    search.params['endTime'] = '';
+  }
+  if (dateRangeTwo.length > 0) {
+    search.params['beginTimeTwo'] = dateRangeTwo[0];
+    search.params['endTimeTwo'] = dateRangeTwo[1];
+  } else {
+    search.params['beginTimeTwo'] = '';
+    search.params['endTimeTwo'] = '';
+  }
+  return search;
+}
+
 // 回显数据字典
 export function selectDictLabel(datas, value) {
   if (value === undefined) {

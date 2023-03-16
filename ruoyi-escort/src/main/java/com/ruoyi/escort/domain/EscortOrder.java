@@ -46,10 +46,14 @@ public class EscortOrder extends BaseEntity {
     @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date appointmentTime;
     
-    /** 预约开始时间 */
+    /**
+     * 预约开始日期
+     */
     private String beginTime;
     
-    /** 预约结束时间 */
+    /**
+     * 预约结束日期
+     */
     private String endTime;
 
     /**
@@ -82,6 +86,16 @@ public class EscortOrder extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "完成时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date finishTime;
+    
+    /**
+     * 完成开始日期
+     */
+    private String beginTimeTwo;
+    
+    /**
+     * 完成结束日期
+     */
+    private String endTimeTwo;
 
     /**
      * 计划完成时间

@@ -397,6 +397,14 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         if (escortOrder.getParams().containsKey("endTime")) {
             escortOrder.getParams().put("endTime", DateUtils.dateTime(DateUtils.getdateAddDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortOrder.getParams().get("endTime").toString()), 1)));
         }
+        // 完成开始日期-1
+        if (escortOrder.getParams().containsKey("beginTimeTwo")) {
+            escortOrder.getParams().put("beginTimeTwo", DateUtils.dateTime(DateUtils.getDateSubtractDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortOrder.getParams().get("beginTimeTwo").toString()), 1)));
+        }
+        // 完成结束日期+1
+        if (escortOrder.getParams().containsKey("endTimeTwo")) {
+            escortOrder.getParams().put("endTimeTwo", DateUtils.dateTime(DateUtils.getdateAddDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortOrder.getParams().get("endTimeTwo").toString()), 1)));
+        }
         return escortOrderMapper.selectEscortOrderInfoList(escortOrder);
     }
 }

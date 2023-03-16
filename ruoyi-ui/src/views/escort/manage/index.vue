@@ -123,13 +123,13 @@
         "\$1****\$2"):""}}
       </template>
       </el-table-column>
-        <el-table-column label="性别" align="center" prop="escortSex">
+        <el-table-column label="性别" align="center" width="100" prop="escortSex">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.escortSex"/>
         </template>
       </el-table-column>
-      <el-table-column label="年龄" align="center" prop="escortAge" />
-      <el-table-column label="护龄" align="center" prop="escortNursingAge" />
+      <el-table-column label="年龄" align="center" width="100" prop="escortAge" />
+      <el-table-column label="护龄" align="center" width="100" prop="escortNursingAge" />
       <el-table-column label="籍贯" align="center" width="150" :show-overflow-tooltip="true" prop="escortNativePlace" />
       <el-table-column label="住址" align="center" width="150" :show-overflow-tooltip="true" prop="escortAddress" />
       <el-table-column label="个人简介" align="center" prop="escortIntroduce" min-width="120" :show-overflow-tooltip="true"/>
