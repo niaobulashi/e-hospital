@@ -43,3 +43,12 @@ export function delPayment(paymentId) {
     method: 'delete'
   })
 }
+
+// 查询支付单流水列表
+export function paySumAmount(query) {
+  return request({
+    url: '/escort/payment/paySumAmount',
+    method: 'get',
+    params: query
+  })
+}

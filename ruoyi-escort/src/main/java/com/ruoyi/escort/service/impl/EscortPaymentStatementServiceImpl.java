@@ -107,4 +107,16 @@ public class EscortPaymentStatementServiceImpl implements IEscortPaymentStatemen
 		}
 		return escortPaymentStatementMapper.selectEscortPaymentAndMemList(escortPaymentStatement);
 	}
+	
+	
+	/**
+	 * 首页查询一周内的总营业额
+	 *
+	 * @param escortPaymentStatement 支付单流水
+	 * @return 支付单流水
+	 */
+	@Override
+	public List<EscortPaymentStatement> selectEscortPaymentSumAmountList(EscortPaymentStatement escortPaymentStatement) {
+		return escortPaymentStatementMapper.selectEscortPaymentSumAmountList(escortPaymentStatement);
+	}
 }

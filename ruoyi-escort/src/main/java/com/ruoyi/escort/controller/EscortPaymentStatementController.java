@@ -106,4 +106,13 @@ public class EscortPaymentStatementController extends BaseController {
 	public AjaxResult remove(@PathVariable Long[] paymentIds) {
 		return toAjax(escortPaymentStatementService.deleteEscortPaymentStatementByPaymentIds(paymentIds));
 	}
+	
+	/**
+	 * 首页查询一周内的总营业额
+	 */
+	@GetMapping("/paySumAmount")
+	public TableDataInfo paySumAmount(EscortPaymentStatement escortPaymentStatement) {
+		List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList(escortPaymentStatement);
+		return getDataTable(list);
+	}
 }
