@@ -125,5 +125,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and t.payment_time &lt;= #{params.endTime}
             </if>
         </where>
+        order by t.payment_time desc
     </select>
 </mapper>
