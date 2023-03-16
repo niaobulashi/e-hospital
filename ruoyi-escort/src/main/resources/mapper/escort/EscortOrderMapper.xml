@@ -199,6 +199,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="escortName != null "> and t2.escort_name like concat('%', #{escortName}, '%')</if>
             <if test="status != null  and status != ''"> and t.status = #{status}</if>
             <if test="planFinishTime != null "> and t.plan_finish_time = #{planFinishTime}</if>
+            <if test="targetFinishTime != null "> and DATE_FORMAT(finish_time,"%Y-%m-%d") = DATE_FORMAT(#{targetFinishTime},"%Y-%m-%d")</if>
         </where>
         order by t.create_time desc,t.order_id desc
     </select>

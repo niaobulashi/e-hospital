@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            总会员数
+            会员总数
           </div>
           <count-to :start-val="0" :end-val="memberCount" :duration="3000" class="card-panel-num"/>
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            总陪诊员数
+            陪诊员总数
           </div>
           <count-to :start-val="0" :end-val="manageCount" :duration="3000" class="card-panel-num"/>
         </div>
@@ -59,6 +59,7 @@
 import CountTo from 'vue-count-to'
 import {listMember} from "@/api/escort/member";
 import {listManage} from "@/api/escort/manage";
+import {listOrder} from "@/api/escort/order";
 
 export default {
   components: {
@@ -69,7 +70,12 @@ export default {
       memberCount: 0,
       manageCount: 0,
       paymentAmount: 0,
-      finishOrder: 0
+      finishOrder: 0,
+      // 订单查询参数
+      orderQueryParams: {
+        status: '2',
+        targetFinishTime: this.$moment().format('YYYY-MM-DD')
+      }
     }
   },
   methods: {
@@ -84,10 +90,12 @@ export default {
       });
     },
     getPaymentAmount() {
-      this.paymentAmount = 111555.25;
+      this.paymentAmount = 1115515.25;
     },
     getFinishOrder() {
-      this.finishOrder = 333555.31;
+      listOrder(this.orderQueryParams).then(response => {
+        this.finishOrder = response.total;
+      });
     }
   },
   mounted() {

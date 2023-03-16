@@ -139,6 +139,12 @@ public class EscortOrder extends BaseEntity {
      */
     private String memberPhone;
 
+    /**
+     * 目标完成日期（目前用于首页查看当日完成的订单）
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String targetFinishTime;
+
 
     public EscortOrder(String orderNo, Long memberId, Date appointmentTime, Long hospitalId, Long projectId,
                        Long escortId, String status, Date planFinishTime) {
