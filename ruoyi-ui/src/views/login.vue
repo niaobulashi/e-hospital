@@ -1,7 +1,7 @@
 <template>
   <div class="login">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">心运树陪诊后台系统</h3>
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" style="margin-left: 850px;">
+      <h3 class="title" style="color: #665a5a;">心运树陪诊后台系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"

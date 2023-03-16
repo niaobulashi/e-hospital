@@ -75,7 +75,12 @@
       <el-table-column label="所属商家" align="center" prop="memberBusinessName" />
       <el-table-column label="所属机构" align="center" prop="memberCorpName" />
       <el-table-column label="姓名" align="center" prop="memberName" />
-      <el-table-column label="手机" align="center" prop="memberPhone" />
+      <el-table-column label="手机" align="center" prop="memberPhone">
+        <template slot-scope="scope">
+          {{scope.row.memberPhone? scope.row.memberPhone.replace(/^(.{3})(?:\w+)(.{4})$/,
+          "\$1****\$2"):""}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

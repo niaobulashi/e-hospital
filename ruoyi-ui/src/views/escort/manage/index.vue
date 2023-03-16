@@ -117,8 +117,13 @@
       <el-table-column label="所属商家" align="center" prop="escortBusinessName" />
       <el-table-column label="所属机构" align="center" prop="escortCorpName" />
       <el-table-column label="姓名" align="center" prop="escortName" />
-      <el-table-column label="手机" align="center" prop="escortPhone" />
-      <el-table-column label="性别" align="center" prop="escortSex">
+      <el-table-column label="手机" align="center" prop="escortPhone">
+      <template slot-scope="scope">
+        {{scope.row.escortPhone? scope.row.escortPhone.replace(/^(.{3})(?:\w+)(.{4})$/,
+        "\$1****\$2"):""}}
+      </template>
+      </el-table-column>
+        <el-table-column label="性别" align="center" prop="escortSex">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.escortSex"/>
         </template>

@@ -133,7 +133,12 @@
       <el-table-column label="订单号" align="center" prop="orderNo"/>
       <el-table-column label="会员ID" align="center" prop="memberId"/>
       <el-table-column label="会员姓名" align="center" prop="memberName"/>
-      <el-table-column label="会员手机" align="center" prop="memberPhone"/>
+      <el-table-column label="会员手机" align="center" prop="memberPhone">
+        <template slot-scope="scope">
+          {{scope.row.memberPhone? scope.row.memberPhone.replace(/^(.{3})(?:\w+)(.{4})$/,
+          "\$1****\$2"):""}}
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="医院ID" align="center" prop="hospitalId"/>-->
       <el-table-column label="医院名称" align="center" prop="hospitalName"/>
 <!--      <el-table-column label="项目ID" align="center" prop="projectId"/>-->
