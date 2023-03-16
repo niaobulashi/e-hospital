@@ -108,8 +108,8 @@
         </template>
       </el-table-column>
       <el-table-column label="服务时间" align="center" prop="hospitalServerTime" />
-      <el-table-column label="地区" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalArea" />
-      <el-table-column label="地址" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalAddress" />
+      <el-table-column label="地区" align="center" width="260" :show-overflow-tooltip="true" prop="hospitalArea" />
+      <el-table-column label="地址" align="center" width="260" :show-overflow-tooltip="true" prop="hospitalAddress" />
       <el-table-column label="简介" align="center" width="220" :show-overflow-tooltip="true" prop="hospitalIntroduce" />
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">

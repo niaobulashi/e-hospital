@@ -20,7 +20,7 @@
       <el-form-item label="支付时间">
         <el-date-picker
           v-model="dateRange"
-          style="width: 208px"
+          style="width: 209px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"

@@ -70,7 +70,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="会员ID" align="center" prop="memberId" />
       <el-table-column label="所属商家" align="center" prop="memberBusinessName" />
       <el-table-column label="所属机构" align="center" prop="memberCorpName" />
@@ -81,7 +81,7 @@
           "\$1****\$2"):""}}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -98,7 +98,7 @@
             v-hasPermi="['escort:member:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
     <pagination
