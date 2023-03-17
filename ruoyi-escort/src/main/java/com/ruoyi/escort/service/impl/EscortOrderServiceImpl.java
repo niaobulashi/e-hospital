@@ -204,7 +204,9 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         // 随机生成会员并保存
         Long memberId = getUserId();
         // 随机获取医院
-        List<EscortHospital> hospitalList = escortHospitalService.selectEscortHospitalList(new EscortHospital());
+        EscortHospital escortHospital = new EscortHospital();
+        escortHospital.setHospitalStatus(EscortEnums.HospitalStatus.status_0.getCode());
+        List<EscortHospital> hospitalList = escortHospitalService.selectEscortHospitalList(escortHospital);
         Long hospitalId = RandomUtil.randomEle(hospitalList).getHospitalId();
         // 随机获取项目
         List<EscortProject> projectList = escortProjectService.selectEscortProjectList(new EscortProject());

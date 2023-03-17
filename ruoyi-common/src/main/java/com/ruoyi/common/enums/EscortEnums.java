@@ -41,4 +41,23 @@ public class EscortEnums {
             return name;
         }
     }
+
+    // 医院状态
+    public enum HospitalStatus {
+        // 有效
+        status_0("0"),
+        // 无效
+        status_1("1");
+
+
+        private final String code;
+
+        HospitalStatus(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
+    }
 }
