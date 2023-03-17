@@ -409,4 +409,14 @@ public class EscortOrderServiceImpl implements IEscortOrderService {
         }
         return escortOrderMapper.selectEscortOrderInfoList(escortOrder);
     }
+
+    /**
+     * 查询当月订单的项目类型及其数量
+     *
+     * @return
+     */
+    @Override
+    public List<OrderProjectInfoVo> projectTypeInfo() {
+        return escortOrderMapper.projectTypeInfo();
+    }
 }

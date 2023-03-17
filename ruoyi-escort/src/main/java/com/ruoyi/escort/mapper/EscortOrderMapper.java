@@ -1,8 +1,9 @@
 package com.ruoyi.escort.mapper;
 
-import java.util.List;
 import com.ruoyi.escort.domain.EscortOrder;
+import com.ruoyi.escort.domain.OrderProjectInfoVo;
 
+import java.util.List;
 
 
 /**
@@ -62,12 +63,14 @@ public interface EscortOrderMapper {
 
     /**
      * 查询预约/计划完成日期为今天的订单列表
+     *
      * @return
      */
-    public List<EscortOrder>  selectEscortOrderListToday(EscortOrder escortOrder);
+    public List<EscortOrder> selectEscortOrderListToday(EscortOrder escortOrder);
 
     /**
      * 修改订单状态通过时间参数
+     *
      * @param escortOrder
      * @return 结果
      */
@@ -80,4 +83,11 @@ public interface EscortOrderMapper {
      * @return 订单列表集合
      */
     public List<EscortOrder> selectEscortOrderInfoList(EscortOrder escortOrder);
+
+    /**
+     * 查询当月订单的项目类型及其数量
+     *
+     * @return
+     */
+    public List<OrderProjectInfoVo> projectTypeInfo();
 }

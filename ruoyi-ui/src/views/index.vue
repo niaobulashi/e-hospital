@@ -11,7 +11,7 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12">
         <div class="chart-wrapper">
-          <line-chart :chart-data="lineChartData" />
+          <pie-chart />
         </div>
       </el-col>
     </el-row>
@@ -21,9 +21,7 @@
 <script>
 import PanelGroup from './dashboard/PanelGroup'
 import LineChart from './dashboard/LineChart'
-import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
-import BarChart from './dashboard/BarChart'
 
 const lineChartData = {
   newVisitis: {
@@ -45,9 +43,7 @@ export default {
   components: {
     PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart
+    PieChart
   },
   data() {
     return {

@@ -29,6 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="memberPhone"    column="member_phone"    />
     </resultMap>
 
+    <resultMap type="OrderProjectInfoVo" id="OrderProjectInfoVoResult">
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
+    </resultMap>
+
     <sql id="selectEscortOrderVo">
         select order_id, order_no, member_id, appointment_time, hospital_id, project_id, escort_id, status, finish_time, plan_finish_time, del_flag, create_by, create_time, update_by, update_time, remark from escort_order
     </sql>
@@ -202,5 +207,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="targetFinishTime != null "> and DATE_FORMAT(finish_time,"%Y-%m-%d") = DATE_FORMAT(#{targetFinishTime},"%Y-%m-%d")</if>
         </where>
         order by t.create_time desc,t.order_id desc
+    </select>
+
+    <!--查询当月订单的项目类型及其数量-->
+    <select id="projectTypeInfo" resultMap="OrderProjectInfoVoResult">
+        select
+            t1.project_name   name,
+            count(t.order_id)   value
+        from
+            escort_order t
+                left join escort_project t1 on t1.project_id = t.project_id
+        where
+            1 = 1
+          and date_format(t.finish_time, '%Y-%m') = date_format(now(), '%Y-%m')
+        group by
+            t1.project_name
     </select>
 </mapper>

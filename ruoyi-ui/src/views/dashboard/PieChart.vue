@@ -1,11 +1,13 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div id="pieCharId" :class="className" :style="{height:height,width:width}"/>
 </template>
 
 <script>
 import * as echarts from 'echarts';
+
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import request from "@/utils/request";
 
 export default {
   mixins: [resize],
@@ -20,7 +22,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '350px'
     }
   },
   data() {
@@ -29,9 +31,36 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
+    var chartDom = document.getElementById('pieCharId');
+    var myChart = echarts.init(chartDom);
+    var option;
+    option = {
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        left: 'center',
+        bottom: '10'
+      },
+      series: [
+        {
+          name: '当月完成订单类型',
+          type: 'pie',
+          roseType: 'radius',
+          radius: [15, 95],
+          center: ['50%', '38%'],
+          animationEasing: 'cubicInOut',
+          animationDuration: 2600
+        }
+      ]
+    }
+    request.get("/escort/order/projectTypeInfo").then(res => {
+      option.legend.data = res.data.projectName
+      option.series[0].data = res.data.projectTypeInfo
+      myChart.setOption(option);
     })
+
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -39,41 +68,6 @@ export default {
     }
     this.chart.dispose()
     this.chart = null
-  },
-  methods: {
-    initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          left: 'center',
-          bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
-        },
-        series: [
-          {
-            name: 'WEEKLY WRITE ARTICLES',
-            type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
-            animationEasing: 'cubicInOut',
-            animationDuration: 2600
-          }
-        ]
-      })
-    }
   }
 }
 </script>
