@@ -78,9 +78,8 @@ public interface IEscortPaymentStatementService {
 	/**
 	 * 首页查询一周内的总营业额
 	 *
-	 * @param escortPaymentStatement 支付单流水
 	 * @return 支付单流水集合
 	 */
-	public List<EscortPaymentStatement> selectEscortPaymentSumAmountList(EscortPaymentStatement escortPaymentStatement);
+	public List<EscortPaymentStatement> selectEscortPaymentSumAmountList();
 	
 }

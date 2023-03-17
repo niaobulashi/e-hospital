@@ -38,6 +38,8 @@ public class EscortPaymentStatement extends BaseEntity
     @Excel(name = "支付时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date paymentTime;
     
+    private String paymentTimeStr;
+    
     /** 支付开始时间 */
     private String beginTime;
     

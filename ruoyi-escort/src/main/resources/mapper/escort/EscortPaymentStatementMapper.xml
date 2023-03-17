@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="paymentNo"    column="payment_no"    />
         <result property="orderNo"    column="order_no"    />
         <result property="paymentTime"    column="payment_time"    />
+        <result property="paymentTimeStr"    column="payment_time_str"    />
         <result property="paymentAmount"    column="payment_amount"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createBy"    column="create_by"    />
@@ -129,14 +130,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!--首页查询一周内的总营业额-->
-    <select id="selectEscortPaymentSumAmountList" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
+    <select id="selectEscortPaymentSumAmountList" resultMap="EscortPaymentStatementResult">
         SELECT
-            date_format( t.payment_time, '%Y-%m-%d' ) payment_time,
+            date_format( t.payment_time, '%Y-%m-%d' ) payment_time_str,
             sum( t.payment_amount ) payment_amount
         FROM
             escort_payment_statement t
         WHERE
-                date_format( t.create_time, '%Y-%m-%d' ) >= date_format(DATE_SUB(CURDATE(), INTERVAL 7 DAY), '%Y-%m-%d' )
+                date_format( t.payment_time, '%Y-%m-%d' ) >= date_format(DATE_SUB(CURDATE(), INTERVAL 7 DAY), '%Y-%m-%d' )
         GROUP BY
             date_format( t.payment_time, '%Y-%m-%d' )
         ORDER BY
@@ -145,7 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="queryPaymentByDate" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
         SELECT
-            date_format(t.payment_time, '%Y-%m-%d') payment_time,
+            date_format(t.payment_time, '%Y-%m-%d') payment_time_str,
             sum(t.payment_amount) payment_amount
         FROM
             escort_payment_statement t

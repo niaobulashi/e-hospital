@@ -1,8 +1,14 @@
 package com.ruoyi.escort.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.collection.CollUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -118,9 +124,25 @@ public class EscortPaymentStatementController extends BaseController {
 	/**
 	 * 首页查询一周内的总营业额
 	 */
-	@GetMapping("/paySumAmount")
-	public TableDataInfo paySumAmount(EscortPaymentStatement escortPaymentStatement) {
-		List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList(escortPaymentStatement);
+	/*@GetMapping("/paySumAmount")
+	public TableDataInfo paySumAmount() {
+		List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList();
 		return getDataTable(list);
-	}
+	}*/
+    
+    @GetMapping("/paySumAmount")
+    public AjaxResult paySumAmount(){
+        List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList();
+        List<String> paymentTimeStrList = new ArrayList<>();
+        List<BigDecimal> paymentAmountList = new ArrayList<>();
+        
+        for (EscortPaymentStatement vo : list) {
+            paymentTimeStrList.add(vo.getPaymentTimeStr());
+            paymentAmountList.add(vo.getPaymentAmount());
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("paymentTimeStr", CollUtil.newArrayList(paymentTimeStrList));
+        map.put("paymentAmount", CollUtil.newArrayList(paymentAmountList));
+        return AjaxResult.success(map);
+    }
 }
