@@ -183,16 +183,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderNo != null  and orderNo != ''"> and t.order_no = #{orderNo}</if>
             <if test="memberName != null "> and t4.member_name like concat('%', #{memberName}, '%')</if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and t.appointment_time &gt;= #{params.beginTime}
+                and date_format(t.appointment_time, '%Y-%m-%d') &gt;= #{params.beginTime}
             </if>
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and t.appointment_time &lt;= #{params.endTime}
+                and date_format(t.appointment_time, '%Y-%m-%d') &lt;= #{params.endTime}
             </if>
             <if test="params.beginTimeTwo != null and params.beginTimeTwo != ''"><!-- 开始时间检索 -->
-                and t.finish_time &gt;= #{params.beginTimeTwo}
+                and date_format(t.finish_time, '%Y-%m-%d') &gt;= #{params.beginTimeTwo}
             </if>
             <if test="params.endTimeTwo != null and params.endTimeTwo != ''"><!-- 结束时间检索 -->
-                and t.finish_time &lt;= #{params.endTimeTwo}
+                and date_format(t.finish_time, '%Y-%m-%d') &lt;= #{params.endTimeTwo}
             </if>
             <if test="hospitalName != null "> and t1.hospital_name like concat('%', #{hospitalName}, '%')</if>
             <if test="projectName != null "> and t3.project_name like concat('%', #{projectName}, '%')</if>

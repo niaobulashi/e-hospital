@@ -99,11 +99,11 @@ public class EscortPaymentStatementServiceImpl implements IEscortPaymentStatemen
     public List<EscortPaymentStatement> selectEscortPaymentAndMemList(EscortPaymentStatement escortPaymentStatement) {
         // 支付开始日期-1
         if (escortPaymentStatement.getParams().containsKey("beginTime")) {
-            escortPaymentStatement.getParams().put("beginTime", DateUtils.dateTime(DateUtils.getDateSubtractDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortPaymentStatement.getParams().get("beginTime").toString()), 1)));
+            escortPaymentStatement.getParams().put("beginTime", DateUtils.dateTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortPaymentStatement.getParams().get("beginTime").toString())));
         }
         // 支付结束日期+1
         if (escortPaymentStatement.getParams().containsKey("endTime")) {
-            escortPaymentStatement.getParams().put("endTime", DateUtils.dateTime(DateUtils.getdateAddDay(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortPaymentStatement.getParams().get("endTime").toString()), 1)));
+            escortPaymentStatement.getParams().put("endTime", DateUtils.dateTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD, escortPaymentStatement.getParams().get("endTime").toString())));
         }
         return escortPaymentStatementMapper.selectEscortPaymentAndMemList(escortPaymentStatement);
     }

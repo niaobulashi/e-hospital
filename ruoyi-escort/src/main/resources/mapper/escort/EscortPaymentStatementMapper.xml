@@ -119,10 +119,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderNo != null  and orderNo != ''"> and t.order_no = #{orderNo}</if>
             <if test="paymentAmount != null "> and t.payment_amount = #{paymentAmount}</if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and t.payment_time &gt;= #{params.beginTime}
+                and date_format(t.payment_time, '%Y-%m-%d') &gt;= #{params.beginTime}
             </if>
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and t.payment_time &lt;= #{params.endTime}
+                and date_format(t.payment_time, '%Y-%m-%d') &lt;= #{params.endTime}
             </if>
         </where>
         order by t.payment_time desc
