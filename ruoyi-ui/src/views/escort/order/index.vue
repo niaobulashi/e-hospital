@@ -146,9 +146,9 @@
       <el-table-column label="项目金额（元）" width="150" align="center" prop="projectAmount"/>
       <el-table-column label="陪诊员ID" align="center" prop="escortId"/>
       <el-table-column label="陪诊员姓名" width="150" min-width="150" :show-overflow-tooltip="true" align="center" prop="escortName"/>
-      <el-table-column label="预约时间" align="center" prop="appointmentTime" width="180">
+      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.appointmentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="订单状态" align="center" prop="status">
@@ -156,9 +156,9 @@
           <dict-tag :options="dict.type.escort_order_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="下单时间" align="center" prop="createTime" width="180">
+      <el-table-column label="预约时间" align="center" prop="appointmentTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ parseTime(scope.row.appointmentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="完成时间" align="center" prop="finishTime" width="180">

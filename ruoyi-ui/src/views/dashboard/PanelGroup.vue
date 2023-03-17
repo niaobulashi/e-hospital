@@ -48,7 +48,7 @@
           <div class="card-panel-text">
             日完成订单
           </div>
-          <count-to :start-val="0" :end-val="finishOrder" :decimals="2" :duration="3000" class="card-panel-num"/>
+          <count-to :start-val="0" :end-val="finishOrder" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
