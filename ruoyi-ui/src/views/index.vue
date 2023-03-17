@@ -3,10 +3,18 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="12">
+        <div class="chart-wrapper">
+          <line-chart :chart-data="lineChartData" />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <div class="chart-wrapper">
+          <line-chart :chart-data="lineChartData" />
+        </div>
+      </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -36,7 +44,10 @@ export default {
   name: 'Index',
   components: {
     PanelGroup,
-    LineChart
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart
   },
   data() {
     return {
