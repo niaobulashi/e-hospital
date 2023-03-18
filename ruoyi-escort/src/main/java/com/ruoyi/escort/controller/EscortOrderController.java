@@ -1,6 +1,5 @@
 package com.ruoyi.escort.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -15,10 +14,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 订单列表Controller
@@ -111,14 +110,10 @@ public class EscortOrderController extends BaseController {
     @GetMapping("/projectTypeInfo")
     public AjaxResult projectTypeInfo() {
         List<OrderProjectInfoVo> list = escortOrderService.projectTypeInfo();
-        List<String> projectNameList = new ArrayList<>();
-
-        for (OrderProjectInfoVo vo : list) {
-            projectNameList.add(vo.getName());
-        }
+        List<String> projectNameList = list.stream().map(escortOrder -> escortOrder.getName()).collect(Collectors.toList());
         Map<String, Object> map = new HashMap<>();
-        map.put("projectName", CollUtil.newArrayList(projectNameList));
-        map.put("projectTypeInfo", CollUtil.newArrayList(list));
+        map.put("projectName", projectNameList);
+        map.put("projectTypeInfo", list);
         return AjaxResult.success(map);
     }
 }
