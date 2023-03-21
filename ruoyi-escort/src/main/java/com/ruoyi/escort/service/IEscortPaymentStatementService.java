@@ -81,5 +81,12 @@ public interface IEscortPaymentStatementService {
 	 * @return 支付单流水集合
 	 */
 	public List<EscortPaymentStatement> selectEscortPaymentSumAmountList();
+
+    /**
+     * 支付流水列表查询，统计订单数量、支付金额总数
+     * @param escortPaymentStatement
+     * @return
+     */
+    EscortPaymentStatement selectEscortPaymentSumAmount(EscortPaymentStatement escortPaymentStatement);
 	
 }

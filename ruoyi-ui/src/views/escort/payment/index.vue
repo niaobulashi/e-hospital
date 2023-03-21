@@ -86,6 +86,10 @@
           v-hasPermi="['escort:payment:export']"
         >导出</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <td class="el-table__cell is-leaf"><div class="cell" v-if="pagmentSum"><strong>支付流水总数：{{ pagmentSum.paymentCount }}  笔；</strong></div></td>
+        <td class="el-table__cell is-leaf"><div class="cell" v-if="pagmentSum"><strong>总支付金额：{{ pagmentSum.paymentAmountSum }} 元</strong></div></td>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -162,7 +166,14 @@
 </template>
 
 <script>
-import { listPayment, getPayment, delPayment, addPayment, updatePayment } from "@/api/escort/payment";
+import {
+  listPayment,
+  getPayment,
+  delPayment,
+  addPayment,
+  updatePayment,
+  queryEscortPaymentSumAmount
+} from "@/api/escort/payment";
 
 export default {
   name: "Payment",
@@ -184,6 +195,8 @@ export default {
       paymentList: [],
       // 日期范围
       dateRange: [],
+      // cache信息
+      pagmentSum: {},
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -263,9 +276,8 @@ export default {
     };
   },
   created() {
-    //this.dateRange.push(this.handleTimeOld(new Date())); // handleTimeOld是我用来获取当月的第一天的
-    //this.dateRange.push(this.handleTimeNew(new Date())); // handleTimeNew是获取当月最后一天
     this.getList();
+    this.queryEscortPaymentSumAmount()();
   },
   methods: {
     /** 查询支付单流水列表 */
@@ -275,6 +287,12 @@ export default {
         this.paymentList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    /** 支付流水列表查询，统计订单数量、支付金额总数 */
+    queryEscortPaymentSumAmount() {
+      queryEscortPaymentSumAmount(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+        this.pagmentSum = response;
       });
     },
     // 取消按钮
@@ -303,6 +321,7 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
+      this.queryEscortPaymentSumAmount();
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -341,12 +360,14 @@ export default {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
+              this.queryEscortPaymentSumAmount();
             });
           } else {
             addPayment(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
+              this.queryEscortPaymentSumAmount();
             });
           }
         }
@@ -359,6 +380,7 @@ export default {
         return delPayment(paymentIds);
       }).then(() => {
         this.getList();
+        this.queryEscortPaymentSumAmount();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },

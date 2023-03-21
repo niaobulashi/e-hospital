@@ -120,16 +120,11 @@ public class EscortPaymentStatementController extends BaseController {
     public EscortPaymentStatement queryPaymentByDate(EscortPaymentStatement escortPaymentStatement) {
         return escortPaymentStatementService.queryPaymentByDate(escortPaymentStatement);
     }
-	
-	/**
-	 * 首页查询一周内的总营业额
-	 */
-	/*@GetMapping("/paySumAmount")
-	public TableDataInfo paySumAmount() {
-		List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList();
-		return getDataTable(list);
-	}*/
-    
+
+    /**
+     * 首页查询一周内的总营业额
+     * @return
+     */
     @GetMapping("/paySumAmount")
     public AjaxResult paySumAmount(){
         List<EscortPaymentStatement> list = escortPaymentStatementService.selectEscortPaymentSumAmountList();
@@ -144,5 +139,13 @@ public class EscortPaymentStatementController extends BaseController {
         map.put("paymentTimeStr", CollUtil.newArrayList(paymentTimeStrList));
         map.put("paymentAmount", CollUtil.newArrayList(paymentAmountList));
         return AjaxResult.success(map);
+    }
+
+    /**
+     * 支付流水列表查询，统计订单数量、支付金额总数
+     */
+    @GetMapping("/queryEscortPaymentSumAmount")
+    public EscortPaymentStatement queryEscortPaymentSumAmount(EscortPaymentStatement escortPaymentStatement) {
+        return escortPaymentStatementService.selectEscortPaymentSumAmount(escortPaymentStatement);
     }
 }

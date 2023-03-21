@@ -82,4 +82,13 @@ public interface EscortPaymentStatementMapper {
      */
     public EscortPaymentStatement queryPaymentByDate(EscortPaymentStatement escortPaymentStatement);
 
+
+    /**
+     * 支付流水列表查询，统计订单数量、支付金额总数
+     *
+     * @param escortPaymentStatement
+     * @return
+     */
+    public EscortPaymentStatement selectEscortPaymentSumAmount(EscortPaymentStatement escortPaymentStatement);
+
 }

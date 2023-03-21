@@ -50,6 +50,12 @@ public class EscortPaymentStatement extends BaseEntity
     @Excel(name = "支付金额")
     private BigDecimal paymentAmount;
 
+    /** 支付金额总数 */
+    private BigDecimal paymentAmountSum;
+
+    /** 支付单个数总数*/
+    private String paymentCount;
+
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 

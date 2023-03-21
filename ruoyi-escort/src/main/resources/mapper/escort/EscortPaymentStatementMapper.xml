@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="orderNo"    column="order_no"    />
         <result property="paymentTime"    column="payment_time"    />
         <result property="paymentTimeStr"    column="payment_time_str"    />
+        <result property="paymentCount"    column="payment_count"    />
+        <result property="paymentAmountSum"    column="payment_amount_sum"    />
         <result property="paymentAmount"    column="payment_amount"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createBy"    column="create_by"    />
@@ -137,13 +139,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM
             escort_payment_statement t
         WHERE
-                date_format( t.payment_time, '%Y-%m-%d' ) >= date_format(DATE_SUB(CURDATE(), INTERVAL 7 DAY), '%Y-%m-%d' )
+            date_format( t.payment_time, '%Y-%m-%d' ) >= date_format(DATE_SUB(CURDATE(), INTERVAL 7 DAY), '%Y-%m-%d' )
         GROUP BY
             date_format( t.payment_time, '%Y-%m-%d' )
         ORDER BY
             date_format( t.payment_time, '%Y-%m-%d' ) ASC
     </select>
 
+    <!--首页查询-查询指定日期的支付流水-->
     <select id="queryPaymentByDate" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
         SELECT
             date_format(t.payment_time, '%Y-%m-%d') payment_time_str,
@@ -154,5 +157,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 date_format(t.payment_time, '%Y-%m-%d') = date_format(#{targetPaymentTime}, '%Y-%m-%d')
         GROUP BY
             date_format(t.payment_time, '%Y-%m-%d')
+    </select>
+
+    <!--支付流水列表查询，统计订单数量、支付金额总数-->
+    <select id="selectEscortPaymentSumAmount" parameterType="EscortPaymentStatement" resultMap="EscortPaymentStatementResult">
+        SELECT
+            count(*) payment_count,
+            sum(t.payment_amount) payment_amount_sum
+        FROM
+            escort_payment_statement t
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.payment_time, '%Y-%m-%d') &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.payment_time, '%Y-%m-%d') &lt;= #{params.endTime}
+            </if>
+        </where>
     </select>
 </mapper>

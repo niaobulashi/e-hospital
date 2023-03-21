@@ -60,3 +60,12 @@ export function paySumAmount() {
     method: 'get'
   })
 }
+
+// 支付流水列表查询，统计订单数量、支付金额总数
+export function queryEscortPaymentSumAmount(query) {
+  return request({
+    url: '/escort/payment/queryEscortPaymentSumAmount',
+    method: 'get',
+    params: query
+  })
+}

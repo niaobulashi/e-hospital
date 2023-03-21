@@ -129,4 +129,17 @@ public class EscortPaymentStatementServiceImpl implements IEscortPaymentStatemen
 	public List<EscortPaymentStatement> selectEscortPaymentSumAmountList() {
 		return escortPaymentStatementMapper.selectEscortPaymentSumAmountList();
 	}
+
+
+
+    /**
+     * 支付流水列表查询，统计订单数量、支付金额总数
+     *
+     * @param escortPaymentStatement
+     * @return
+     */
+    @Override
+    public EscortPaymentStatement selectEscortPaymentSumAmount(EscortPaymentStatement escortPaymentStatement) {
+        return escortPaymentStatementMapper.selectEscortPaymentSumAmount(escortPaymentStatement);
+    }
 }
