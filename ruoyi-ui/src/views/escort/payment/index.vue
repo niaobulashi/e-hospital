@@ -52,7 +52,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['escort:payment:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -63,7 +64,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['escort:payment:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -74,7 +76,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['escort:payment:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -84,45 +87,48 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['escort:payment:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
-      <el-col :span="1.5">
-        <td class="el-table__cell is-leaf"><div class="cell" v-if="pagmentSum"><strong>支付流水总数：{{ pagmentSum.paymentCount }}  笔；</strong></div></td>
-        <td class="el-table__cell is-leaf"><div class="cell" v-if="pagmentSum"><strong>总支付金额：{{ pagmentSum.paymentAmountSum }} 元</strong></div></td>
+      <el-col :span="1.5" style="color: rgb(206 120 69);">
+        <td class="el-table__cell is-leaf">
+          <div class="cell" v-show="sumShowFlag"><strong>流水总数：{{ pagmentSum.paymentCount |money(0) }} 笔{{"\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"}}总金额：{{ pagmentSum.paymentAmountSum | money }} 元</strong>
+          </div>
+        </td>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="paymentList" @selection-change="handleSelectionChange">
-<!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="支付流水ID" align="center" width="150" prop="paymentId" />
-      <el-table-column label="支付流水号" align="center" width="260" prop="paymentNo" />
-      <el-table-column label="订单号" align="center" width="260" prop="orderNo" />
-      <el-table-column label="会员姓名" align="center" width="240" prop="memberName" />
+      <!--      <el-table-column type="selection" width="55" align="center" />-->
+      <el-table-column label="支付流水ID" align="center" width="150" prop="paymentId"/>
+      <el-table-column label="支付流水号" align="center" width="260" prop="paymentNo"/>
+      <el-table-column label="订单号" align="center" width="260" prop="orderNo"/>
+      <el-table-column label="会员姓名" align="center" width="240" prop="memberName"/>
       <el-table-column label="支付时间" align="center" width="260" prop="paymentTime">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.paymentTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付金额（元）" width="260" align="center" prop="paymentAmount" />
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['escort:payment:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['escort:payment:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>-->
+      <el-table-column label="支付金额（元）" width="260" align="center" prop="paymentAmount"/>
+      <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="handleUpdate(scope.row)"
+                  v-hasPermi="['escort:payment:edit']"
+                >修改</el-button>
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="handleDelete(scope.row)"
+                  v-hasPermi="['escort:payment:remove']"
+                >删除</el-button>
+              </template>
+            </el-table-column>-->
     </el-table>
 
     <pagination
@@ -137,24 +143,24 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="支付流水号" prop="paymentNo">
-          <el-input v-model="form.paymentNo" placeholder="请输入支付流水号" />
+          <el-input v-model="form.paymentNo" placeholder="请输入支付流水号"/>
         </el-form-item>
         <el-form-item label="订单号" prop="orderNo">
-          <el-input v-model="form.orderNo" placeholder="请输入订单号" />
+          <el-input v-model="form.orderNo" placeholder="请输入订单号"/>
         </el-form-item>
         <el-form-item label="支付时间" prop="paymentTime">
           <el-date-picker clearable
-            v-model="form.paymentTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择支付时间">
+                          v-model="form.paymentTime"
+                          type="datetime"
+                          value-format="yyyy-MM-dd HH:mm:ss"
+                          placeholder="请选择支付时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="支付金额" prop="paymentAmount">
-          <el-input v-model="form.paymentAmount" placeholder="请输入支付金额" />
+          <el-input v-model="form.paymentAmount" placeholder="请输入支付金额"/>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -191,6 +197,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      // 统计是否展示
+      sumShowFlag: false,
       // 支付单流水表格数据
       paymentList: [],
       // 日期范围
@@ -215,13 +223,13 @@ export default {
       // 表单校验
       rules: {
         paymentNo: [
-          { required: true, message: "支付流水号不能为空", trigger: "blur" }
+          {required: true, message: "支付流水号不能为空", trigger: "blur"}
         ],
         orderNo: [
-          { required: true, message: "订单号不能为空", trigger: "blur" }
+          {required: true, message: "订单号不能为空", trigger: "blur"}
         ],
         paymentAmount: [
-          { required: true, message: "支付金额不能为空", trigger: "blur" }
+          {required: true, message: "支付金额不能为空", trigger: "blur"}
         ],
       },
       // 日期选择器
@@ -277,7 +285,7 @@ export default {
   },
   created() {
     this.getList();
-    this.queryEscortPaymentSumAmount()();
+    this.queryEscortPaymentSumAmount();
   },
   methods: {
     /** 查询支付单流水列表 */
@@ -293,6 +301,11 @@ export default {
     queryEscortPaymentSumAmount() {
       queryEscortPaymentSumAmount(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
         this.pagmentSum = response;
+        if (this.dateRange.length > 0) {
+          this.sumShowFlag = true;
+        } else {
+          this.sumShowFlag = false;
+        }
       });
     },
     // 取消按钮
@@ -332,7 +345,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.paymentId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -376,13 +389,14 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const paymentIds = row.paymentId || this.ids;
-      this.$modal.confirm('是否确认删除支付单流水编号为"' + paymentIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除支付单流水编号为"' + paymentIds + '"的数据项？').then(function () {
         return delPayment(paymentIds);
       }).then(() => {
         this.getList();
         this.queryEscortPaymentSumAmount();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {

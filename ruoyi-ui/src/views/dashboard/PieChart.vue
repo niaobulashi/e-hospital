@@ -47,7 +47,7 @@ export default {
         {
           name: '当月完成订单类型',
           type: 'pie',
-          roseType: 'radius',
+          roseType: false,
           radius: [15, 95],
           center: ['50%', '38%'],
           animationEasing: 'cubicInOut',

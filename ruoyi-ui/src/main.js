@@ -41,6 +41,8 @@ import VueMeta from 'vue-meta'
 import DictData from '@/components/DictData'
 // 日期处理组件
 import moment from "moment"
+// 过滤器
+import filter from "@/utils/filters.js"
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
