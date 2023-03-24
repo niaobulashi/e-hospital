@@ -70,12 +70,12 @@
     </el-row>
 
     <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
-<!--      <el-table-column type="selection" width="55" align="center" />-->
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="项目ID" align="center" prop="projectId" />
       <el-table-column label="项目名称" align="center" prop="projectName" />
       <el-table-column label="项目金额" align="center" prop="projectAmount" />
-<!--      <el-table-column label="备注" align="center" prop="remark" />-->
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -92,7 +92,7 @@
             v-hasPermi="['escort:project:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>-->
+      </el-table-column>
     </el-table>
 
     <pagination
